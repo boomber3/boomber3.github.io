@@ -1,0 +1,37 @@
+/* 简历页面整体样式 */
+.resume-container {
+  max-width: 1000px; /* 限制宽度，避免内容过宽 */
+  margin: 0 auto;    /* 居中显示 */
+  padding: 20px;     /* 内边距 */
+  line-height: 1.8;  /* 行高，提升可读性 */
+  font-size: 16px;   /* 字体大小 */
+}
+
+/* 项目卡片样式（可选，让项目经历更突出） */
+.resume-container h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #49b1f5; /* 匹配Butterfly主题色 */
+  border-left: 4px solid #49b1f5;
+  padding-left: 10px;
+}
+
+/* 列表样式优化 */
+.resume-container ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.resume-container li {
+  margin-bottom: 8px;
+}
+
+/* 链接样式（如项目地址） */
+.resume-container a {
+  color: #49b1f5;
+  text-decoration: none;
+}
+
+.resume-container a:hover {
+  text-decoration: underline;
+}
