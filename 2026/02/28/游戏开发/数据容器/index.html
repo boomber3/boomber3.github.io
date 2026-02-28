@@ -1,0 +1,634 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据存储与配置的三种方案 | BoomberBlog</title><meta name="author" content="Boomber3"><meta name="copyright" content="Boomber3"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在 Unity 游戏开发中，数据与代码分离是提升开发效率、降低维护成本的核心原则，特别是团队开发时，通常由策划来进行数据的导入与设计。本文将以怪兽数据配置为例，分享三种不同类型的Unity 数据配置方案，适配不同规模项目的需求。 核心设计原则可视化编辑，低耦合，易扩展 ScriptableObjectScriptableObject是 Unity 官方推荐的轻量级数据配置方案，以资源文件形式存储数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据存储与配置的三种方案">
+<meta property="og:url" content="http://example.com/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/index.html">
+<meta property="og:site_name" content="BoomberBlog">
+<meta property="og:description" content="在 Unity 游戏开发中，数据与代码分离是提升开发效率、降低维护成本的核心原则，特别是团队开发时，通常由策划来进行数据的导入与设计。本文将以怪兽数据配置为例，分享三种不同类型的Unity 数据配置方案，适配不同规模项目的需求。 核心设计原则可视化编辑，低耦合，易扩展 ScriptableObjectScriptableObject是 Unity 官方推荐的轻量级数据配置方案，以资源文件形式存储数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/default_cover2.jpg">
+<meta property="article:published_time" content="2026-02-27T16:17:03.000Z">
+<meta property="article:modified_time" content="2026-02-27T19:47:43.969Z">
+<meta property="article:author" content="Boomber3">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/default_cover2.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据存储与配置的三种方案",
+  "url": "http://example.com/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/",
+  "image": "http://example.com/img/default_cover2.jpg",
+  "datePublished": "2026-02-27T16:17:03.000Z",
+  "dateModified": "2026-02-27T19:47:43.969Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Boomber3",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4-b1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据存储与配置的三种方案',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/resume/"><i class="fa-fw fas fa-user-tie"></i><span> 简历及项目展示</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/default_cover2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">BoomberBlog</span></a><a class="nav-page-title" href="/"><span class="site-name">数据存储与配置的三种方案</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/resume/"><i class="fa-fw fas fa-user-tie"></i><span> 简历及项目展示</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据存储与配置的三种方案</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-27T16:17:03.000Z" title="发表于 2026-02-28 00:17:03">2026-02-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-02-27T19:47:43.969Z" title="更新于 2026-02-28 03:47:43">2026-02-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在 Unity 游戏开发中，数据与代码分离是提升开发效率、降低维护成本的核心原则，特别是团队开发时，通常由策划来进行数据的导入与设计。本文将以怪兽数据配置为例，分享三种不同类型的Unity 数据配置方案，适配不同规模项目的需求。</p>
+<h2 id="核心设计原则"><a href="#核心设计原则" class="headerlink" title="核心设计原则"></a>核心设计原则</h2><p><strong>可视化编辑</strong>，<strong>低耦合</strong>，<strong>易扩展</strong></p>
+<h1 id="ScriptableObject"><a href="#ScriptableObject" class="headerlink" title="ScriptableObject"></a>ScriptableObject</h1><p>ScriptableObject是 Unity 官方推荐的轻量级数据配置方案，以资源文件形式存储数据，原生支持 Inspector 可视化编辑，无需编写复杂的解析逻辑。推荐个人开发者使用。<br>使用ScriptableObject就像是定义一个可以直接在Unity内创建数据对象的数据结构。</p>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="创建数据配置类"><a href="#创建数据配置类" class="headerlink" title="创建数据配置类"></a>创建数据配置类</h3><p>核心用法为在创建类时继承ScriptableObject。<br>通常还会使用<code>[CreateAssetMenu(fileName = &quot;文件名&quot;, menuName = &quot;父文件夹/子文件夹&quot;)]</code>来让Unity能够在菜单直接创建。<br>代码演示  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">// 允许在Unity中右键创建该类型的配置文件</span><br><span class="line">[CreateAssetMenu(fileName = &quot;NewMonsterData&quot;, menuName = &quot;GameData/MonsterData&quot;)]</span><br><span class="line">public class MonsterDataSO : ScriptableObject</span><br><span class="line">&#123;</span><br><span class="line">    [Header(&quot;基础信息&quot;)]</span><br><span class="line">    public string monsterName; // 怪物名称</span><br><span class="line">    public int id;             // 唯一标识ID</span><br><span class="line">    </span><br><span class="line">    [Header(&quot;战斗属性&quot;)]</span><br><span class="line">    [Range(10, 1000)] // 限制数值范围，防止不合理配置</span><br><span class="line">    public int maxHp;         // 最大血量</span><br><span class="line">    public int attackDamage;  // 攻击伤害</span><br><span class="line">    public float attackSpeed; // 攻击间隔（秒）</span><br><span class="line">    public int defense;       // 防御值</span><br><span class="line">    </span><br><span class="line">    [Header(&quot;其他属性&quot;)]</span><br><span class="line">    public float moveSpeed;    // 移动速度</span><br><span class="line">    public int expReward;      // 击杀经验奖励</span><br><span class="line">    public Sprite icon;        // 怪物图标（可选）</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建具体的配置文件"><a href="#创建具体的配置文件" class="headerlink" title="创建具体的配置文件"></a>创建具体的配置文件</h3><p>在 Project 面板右键 → GameData → MonsterData，生成配置文件，在 Inspector 中直接填写数值。</p>
+<h3 id="在业务代码中使用"><a href="#在业务代码中使用" class="headerlink" title="在业务代码中使用"></a>在业务代码中使用</h3><p>在需要配置数据的对象中编写好对应的逻辑脚本，挂在，通过读取数据对象来获得数据<br>代码示例<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class Monster : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    // 在Inspector中拖入对应的MonsterDataSO文件</span><br><span class="line">    public MonsterDataSO monsterData;</span><br><span class="line">    </span><br><span class="line">    // 运行时动态数值（如当前血量）</span><br><span class="line">    private int currentHp;</span><br><span class="line"></span><br><span class="line">    void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        // 从配置文件初始化数据</span><br><span class="line">        currentHp = monsterData.maxHp;</span><br><span class="line">        Debug.Log($&quot;怪物&#123;monsterData.monsterName&#125;初始化，血量：&#123;currentHp&#125;，伤害：&#123;monsterData.attackDamage&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 受击逻辑示例</span><br><span class="line">    public void TakeDamage(int damage)</span><br><span class="line">    &#123;</span><br><span class="line">        int realDamage = Mathf.Max(0, damage - monsterData.defense);</span><br><span class="line">        currentHp -= realDamage;</span><br><span class="line">        if (currentHp &lt;= 0) Die();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 死亡逻辑示例</span><br><span class="line">    private void Die()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log($&quot;怪物&#123;monsterData.monsterName&#125;死亡，奖励经验：&#123;monsterData.expReward&#125;&quot;);</span><br><span class="line">        Destroy(gameObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="JSON-配置文件"><a href="#JSON-配置文件" class="headerlink" title="JSON 配置文件"></a>JSON 配置文件</h1><p>JSON全称为（JavaScript Object Notation），是一种文件的类型，在开发中经常使用到,没有基础的直接理解为一套按照固定规则编写的txt文件，通过拆解这个规则能够获得文件所描述的对象。  </p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/json/js-json-objects.html">JSON学习链接</a></p>
+</blockquote>
+<p><strong>特点</strong>:相较于Scriptable对象，JSON配置的好处就在于数据脱离了引擎存在，这个数据拿到哪里都可以别识别为对象，并且文件便于传输,适用于策划 / 开发分工明确的团队。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="JSON文件创建"><a href="#JSON文件创建" class="headerlink" title="JSON文件创建"></a>JSON文件创建</h3><p>在Resources文件夹下创建 MonsterDatas.json，按结构编写配置：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;monsters&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;id&quot;: 101,</span><br><span class="line">      &quot;name&quot;: &quot;哥布林&quot;,</span><br><span class="line">      &quot;maxHp&quot;: 200,</span><br><span class="line">      &quot;attackDamage&quot;: 30,</span><br><span class="line">      &quot;attackSpeed&quot;: 1.5,</span><br><span class="line">      &quot;defense&quot;: 5,</span><br><span class="line">      &quot;moveSpeed&quot;: 2.0,</span><br><span class="line">      &quot;expReward&quot;: 50</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;id&quot;: 102,</span><br><span class="line">      &quot;name&quot;: &quot;兽人&quot;,</span><br><span class="line">      &quot;maxHp&quot;: 500,</span><br><span class="line">      &quot;attackDamage&quot;: 80,</span><br><span class="line">      &quot;attackSpeed&quot;: 2.0,</span><br><span class="line">      &quot;defense&quot;: 20,</span><br><span class="line">      &quot;moveSpeed&quot;: 1.5,</span><br><span class="line">      &quot;expReward&quot;: 100</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="定义JSON数据模型"><a href="#定义JSON数据模型" class="headerlink" title="定义JSON数据模型"></a>定义JSON数据模型</h3><p>定义JSON数据模型的作用是在Unity中创建一个类，用来存储JSON文件中的数据<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">// 单条怪物数据模型</span><br><span class="line">[System.Serializable]</span><br><span class="line">public class MonsterData</span><br><span class="line">&#123;</span><br><span class="line">    public int id;</span><br><span class="line">    public string name;</span><br><span class="line">    public int maxHp;</span><br><span class="line">    public int attackDamage;</span><br><span class="line">    public float attackSpeed;</span><br><span class="line">    public int defense;</span><br><span class="line">    public float moveSpeed;</span><br><span class="line">    public int expReward;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 所有怪物数据的容器</span><br><span class="line">[System.Serializable]</span><br><span class="line">public class MonsterDataList</span><br><span class="line">&#123;</span><br><span class="line">    public List&lt;MonsterData&gt; monsters;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="实现数据管理器"><a href="#实现数据管理器" class="headerlink" title="实现数据管理器"></a>实现数据管理器</h3><p>数据管理器用于各个管理数据的加载和解析<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class GameDataManager : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    // 全局单例实例</span><br><span class="line">    public static GameDataManager Instance;</span><br><span class="line"></span><br><span class="line">    // 字典存储数据，按ID快速查找</span><br><span class="line">    private Dictionary&lt;int, MonsterData&gt; monsterDataDict;</span><br><span class="line"></span><br><span class="line">    void Awake()</span><br><span class="line">    &#123;</span><br><span class="line">        // 单例初始化（确保全局唯一）</span><br><span class="line">        if (Instance == null)</span><br><span class="line">        &#123;</span><br><span class="line">            Instance = this;</span><br><span class="line">            DontDestroyOnLoad(gameObject); // 跨场景不销毁</span><br><span class="line">            LoadMonsterDatas();</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Destroy(gameObject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 加载并解析JSON配置</span><br><span class="line">    private void LoadMonsterDatas()</span><br><span class="line">    &#123;</span><br><span class="line">        monsterDataDict = new Dictionary&lt;int, MonsterData&gt;();</span><br><span class="line">        </span><br><span class="line">        // 从Resources加载JSON文件</span><br><span class="line">        TextAsset jsonFile = Resources.Load&lt;TextAsset&gt;(&quot;MonsterDatas&quot;);</span><br><span class="line">        if (jsonFile == null)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(&quot;找不到MonsterDatas.json配置文件！&quot;);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 解析JSON到对象</span><br><span class="line">        MonsterDataList dataList = JsonUtility.FromJson&lt;MonsterDataList&gt;(jsonFile.text);</span><br><span class="line">        </span><br><span class="line">        // 存入字典，便于快速查询</span><br><span class="line">        foreach (MonsterData data in dataList.monsters)</span><br><span class="line">        &#123;</span><br><span class="line">            monsterDataDict.Add(data.id, data);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        Debug.Log($&quot;成功加载&#123;monsterDataDict.Count&#125;种怪物配置&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 对外提供数据查询接口</span><br><span class="line">    public MonsterData GetMonsterData(int monsterId)</span><br><span class="line">    &#123;</span><br><span class="line">        if (monsterDataDict.ContainsKey(monsterId))</span><br><span class="line">        &#123;</span><br><span class="line">            return monsterDataDict[monsterId];</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError($&quot;未找到ID为&#123;monsterId&#125;的怪物配置！&quot;);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="在业务代码中访问数据管理器获取数据配置"><a href="#在业务代码中访问数据管理器获取数据配置" class="headerlink" title="在业务代码中访问数据管理器获取数据配置"></a>在业务代码中访问数据管理器获取数据配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class Monster : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    public int monsterId; // 在Inspector填写怪物ID（如101）</span><br><span class="line">    private MonsterData monsterData;</span><br><span class="line">    private int currentHp;</span><br><span class="line"></span><br><span class="line">    void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        // 从全局管理器获取配置</span><br><span class="line">        monsterData = GameDataManager.Instance.GetMonsterData(monsterId);</span><br><span class="line">        if (monsterData == null) return;</span><br><span class="line">        </span><br><span class="line">        // 初始化数值</span><br><span class="line">        currentHp = monsterData.maxHp;</span><br><span class="line">        Debug.Log($&quot;怪物&#123;monsterData.name&#125;初始化，血量：&#123;currentHp&#125;，伤害：&#123;monsterData.attackDamage&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 受击、死亡逻辑与方案一一致</span><br><span class="line">    public void TakeDamage(int damage)</span><br><span class="line">    &#123;</span><br><span class="line">        int realDamage = Mathf.Max(0, damage - monsterData.defense);</span><br><span class="line">        currentHp -= realDamage;</span><br><span class="line">        if (currentHp &lt;= 0) Die();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void Die()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log($&quot;怪物&#123;monsterData.name&#125;死亡，奖励经验：&#123;monsterData.expReward&#125;&quot;);</span><br><span class="line">        Destroy(gameObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Excel配置"><a href="#Excel配置" class="headerlink" title="Excel配置"></a>Excel配置</h1><p>其实核心与JSON配置的思路差不多，只是Excel有更好的软件进行数据管理和操作，都是通过外置文件，文件转换为数据，实例获取数据。<br><strong>核心流程</strong>：通过 Excel 管理数据，导出为 CSV/JSON 后在 Unity 中解析</p>
+<p><pre class="mermaid">graph LR
+A[Excel编写数据] --> B[导出为CSV/JSON]
+B --> C[Unity解析文件]
+C --> D[数据管理器封装]
+D --> E[业务代码调用]</pre></p>
+<h2 id="实现-这里以使用CsvHelper库实现"><a href="#实现-这里以使用CsvHelper库实现" class="headerlink" title="实现(这里以使用CsvHelper库实现)"></a>实现(这里以使用CsvHelper库实现)</h2><p>具体如何导库可以查看导入<a href="/2026/02/28/游戏开发/导入外部库/">外部库</a>文章</p>
+<h3 id="新建表格填写数据"><a href="#新建表格填写数据" class="headerlink" title="新建表格填写数据"></a>新建表格填写数据</h3><p>新建 MonsterDatas.xlsx，列名对应属性（ID、name、maxHp、attackDamage 等），填写所有怪物数据：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>name</th>
+<th>maxHp</th>
+<th>attackDamage</th>
+<th>attackSpeed</th>
+<th>defense</th>
+<th>moveSpeed</th>
+<th>expReward</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>哥布林</td>
+<td>200</td>
+<td>30</td>
+<td>1.5</td>
+<td>5</td>
+<td>2.0</td>
+<td>50</td>
+</tr>
+<tr>
+<td>102</td>
+<td>兽人</td>
+<td>500</td>
+<td>80</td>
+<td>2.0</td>
+<td>20</td>
+<td>1.5</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="导出为csv文件"><a href="#导出为csv文件" class="headerlink" title="导出为csv文件"></a>导出为csv文件</h3><p>将 Excel 另存为 MonsterDatas.csv（必须选择 UTF-8 编码，避免中文乱码）。</p>
+<h3 id="定义数据模型-与Json方法一致"><a href="#定义数据模型-与Json方法一致" class="headerlink" title="定义数据模型(与Json方法一致)"></a>定义数据模型(与Json方法一致)</h3><p>创建MonsterCsvData.cs<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">using System.ComponentModel;</span><br><span class="line">using CsvHelper.Configuration.Attributes;</span><br><span class="line">/// 怪物CSV数据模型（字段名需与CSV列名一致，大小写不敏感）</span><br><span class="line">public class MonsterCsvData</span><br><span class="line">&#123;</span><br><span class="line">    [Name(&quot;ID&quot;)]</span><br><span class="line">    public int Id &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;Name&quot;)]</span><br><span class="line">    public string MonsterName &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;MaxHp&quot;)]</span><br><span class="line">    public int MaxHp &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;AttackDamage&quot;)]</span><br><span class="line">    public int AttackDamage &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;AttackSpeed&quot;)]</span><br><span class="line">    public float AttackSpeed &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;Defense&quot;)]</span><br><span class="line">    public int Defense &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;MoveSpeed&quot;)]</span><br><span class="line">    public float MoveSpeed &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    [Name(&quot;ExpReward&quot;)]</span><br><span class="line">    public int ExpReward &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h3 id="实现CSV解析工具类"><a href="#实现CSV解析工具类" class="headerlink" title="实现CSV解析工具类"></a>实现CSV解析工具类</h3><p>实现该类一般需要一个外部库,作用是能够让C#读懂CSV文件，<br>该类一般要实现以下功能</p>
+<ol>
+<li>文件读取模块 : 负责打开和关闭CSV文件，读取文件流。</li>
+<li>数据解析模块 : 将读取到的文本数据解析成结构化对象或数据集合。</li>
+<li>错误处理模块 : 捕获并处理在读取和解析过程中可能发生的异常。</li>
+<li>接口暴露模块 ：定义外部可见的接口，提供给用户访问类功能的方式。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.IO;</span><br><span class="line">using System.Text;</span><br><span class="line">using CsvHelper;</span><br><span class="line">using CsvHelper.Configuration;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// CSV通用解析工具类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public static class CsvParser</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 从Resources加载CSV并解析为指定类型的列表</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;typeparam name=&quot;T&quot;&gt;数据模型类型&lt;/typeparam&gt;</span><br><span class="line">    /// &lt;param name=&quot;csvPath&quot;&gt;Resources下的CSV路径（不含.csv后缀）&lt;/param&gt;</span><br><span class="line">    /// &lt;returns&gt;解析后的数据集&lt;/returns&gt;</span><br><span class="line">    public static List&lt;T&gt; ParseCsvFromResources&lt;T&gt;(string csvPath) where T : class, new()</span><br><span class="line">    &#123;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            // 1. 加载CSV文件</span><br><span class="line">            TextAsset csvAsset = Resources.Load&lt;TextAsset&gt;(csvPath);</span><br><span class="line">            if (csvAsset == null)</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogError($&quot;CSV文件加载失败：Resources/&#123;csvPath&#125;.csv 不存在！&quot;);</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 2. 处理编码（解决中文乱码，强制UTF-8）</span><br><span class="line">            var config = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)</span><br><span class="line">            &#123;</span><br><span class="line">                Encoding = Encoding.UTF8,</span><br><span class="line">                HasHeaderRecord = true, // CSV第一行是列名</span><br><span class="line">                IgnoreBlankLines = true, // 忽略空行</span><br><span class="line">                TrimOptions = TrimOptions.Trim, // 自动去除字段前后空格</span><br><span class="line">                MissingFieldFound = null // 忽略缺失字段（避免解析报错）</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            // 3. 解析CSV</span><br><span class="line">            using (var reader = new StringReader(csvAsset.text))</span><br><span class="line">            using (var csv = new CsvReader(reader, config))</span><br><span class="line">            &#123;</span><br><span class="line">                var records = csv.GetRecords&lt;T&gt;().ToList();</span><br><span class="line">                Debug.Log($&quot;CSV解析成功：&#123;csvPath&#125;.csv，共&#123;records.Count&#125;条数据&quot;);</span><br><span class="line">                return records;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        catch (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError($&quot;CSV解析失败：&#123;e.Message&#125;\n&#123;e.StackTrace&#125;&quot;);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="全局数据管理器"><a href="#全局数据管理器" class="headerlink" title="全局数据管理器"></a>全局数据管理器</h3><p>创建Manager并挂载<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// CSV数据全局管理器（单例模式）</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class CsvDataManager : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    // 全局单例实例</span><br><span class="line">    public static CsvDataManager Instance &#123; get; private set; &#125;</span><br><span class="line"></span><br><span class="line">    // 缓存怪物数据（Key=怪物ID，Value=怪物数据）</span><br><span class="line">    private Dictionary&lt;int, MonsterCsvData&gt; _monsterDataDict;</span><br><span class="line"></span><br><span class="line">    #region 单例初始化</span><br><span class="line">    private void Awake()</span><br><span class="line">    &#123;</span><br><span class="line">        // 单例逻辑（确保全局唯一）</span><br><span class="line">        if (Instance == null)</span><br><span class="line">        &#123;</span><br><span class="line">            Instance = this;</span><br><span class="line">            DontDestroyOnLoad(gameObject); // 跨场景不销毁</span><br><span class="line">            InitAllCsvData(); // 初始化所有CSV数据</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Destroy(gameObject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    #endregion</span><br><span class="line"></span><br><span class="line">    #region 数据初始化</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 初始化所有CSV配置数据</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private void InitAllCsvData()</span><br><span class="line">    &#123;</span><br><span class="line">        // 1. 解析怪物CSV数据</span><br><span class="line">        var monsterDataList = CsvParser.ParseCsvFromResources&lt;MonsterCsvData&gt;(&quot;Configs/MonsterDatas&quot;);</span><br><span class="line">        if (monsterDataList == null || monsterDataList.Count == 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(&quot;怪物CSV数据解析为空！&quot;);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 2. 转换为字典（按ID索引，提升查询效率）</span><br><span class="line">        _monsterDataDict = new Dictionary&lt;int, MonsterCsvData&gt;();</span><br><span class="line">        foreach (var data in monsterDataList)</span><br><span class="line">        &#123;</span><br><span class="line">            if (_monsterDataDict.ContainsKey(data.Id))</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogWarning($&quot;怪物ID重复：&#123;data.Id&#125;，已跳过重复数据&quot;);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            _monsterDataDict.Add(data.Id, data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    #endregion</span><br><span class="line"></span><br><span class="line">    #region 对外接口</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 根据ID获取怪物数据</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;monsterId&quot;&gt;怪物ID&lt;/param&gt;</span><br><span class="line">    /// &lt;returns&gt;怪物数据（无则返回null）&lt;/returns&gt;</span><br><span class="line">    public MonsterCsvData GetMonsterDataById(int monsterId)</span><br><span class="line">    &#123;</span><br><span class="line">        if (_monsterDataDict.TryGetValue(monsterId, out var data))</span><br><span class="line">        &#123;</span><br><span class="line">            return data;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError($&quot;未找到ID为&#123;monsterId&#125;的怪物数据！&quot;);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 获取所有怪物数据</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;returns&gt;所有怪物数据列表&lt;/returns&gt;</span><br><span class="line">    public List&lt;MonsterCsvData&gt; GetAllMonsterData()</span><br><span class="line">    &#123;</span><br><span class="line">        return new List&lt;MonsterCsvData&gt;(_monsterDataDict.Values);</span><br><span class="line">    &#125;</span><br><span class="line">    #endregion</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="业务代码使用"><a href="#业务代码使用" class="headerlink" title="业务代码使用"></a>业务代码使用</h3><p>挂载到怪物预制体<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class Monster : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    [Header(&quot;怪物配置&quot;)]</span><br><span class="line">    public int monsterId; // 在Inspector填写怪物ID（如101）</span><br><span class="line"></span><br><span class="line">    private MonsterCsvData _monsterData;</span><br><span class="line">    private int _currentHp; // 运行时当前血量</span><br><span class="line"></span><br><span class="line">    private void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        // 从数据管理器获取配置</span><br><span class="line">        _monsterData = CsvDataManager.Instance.GetMonsterDataById(monsterId);</span><br><span class="line">        if (_monsterData == null)</span><br><span class="line">        &#123;</span><br><span class="line">            enabled = false; // 数据不存在时禁用脚本</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 初始化怪物属性</span><br><span class="line">        _currentHp = _monsterData.MaxHp;</span><br><span class="line">        Debug.Log($&quot;怪物[&#123;_monsterData.MonsterName&#125;]初始化完成：\n&quot; +</span><br><span class="line">                  $&quot;血量：&#123;_currentHp&#125;/&#123;_monsterData.MaxHp&#125;\n&quot; +</span><br><span class="line">                  $&quot;攻击伤害：&#123;_monsterData.AttackDamage&#125;\n&quot; +</span><br><span class="line">                  $&quot;移动速度：&#123;_monsterData.MoveSpeed&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 受击逻辑</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;damage&quot;&gt;受到的伤害&lt;/param&gt;</span><br><span class="line">    public void TakeDamage(int damage)</span><br><span class="line">    &#123;</span><br><span class="line">        if (_monsterData == null) return;</span><br><span class="line"></span><br><span class="line">        // 计算实际伤害（扣除防御）</span><br><span class="line">        int realDamage = Mathf.Max(0, damage - _monsterData.Defense);</span><br><span class="line">        _currentHp -= realDamage;</span><br><span class="line"></span><br><span class="line">        Debug.Log($&quot;[&#123;_monsterData.MonsterName&#125;]受到&#123;realDamage&#125;点伤害，剩余血量：&#123;_currentHp&#125;&quot;);</span><br><span class="line"></span><br><span class="line">        if (_currentHp &lt;= 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Die();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 死亡逻辑</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private void Die()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log($&quot;[&#123;_monsterData.MonsterName&#125;]死亡，奖励经验：&#123;_monsterData.ExpReward&#125;&quot;);</span><br><span class="line">        Destroy(gameObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Boomber3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/">http://example.com/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">BoomberBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a></div><div class="post-share"><div class="social-share" data-image="/img/default_cover2.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E5%AF%BC%E5%85%A5%E5%A4%96%E9%83%A8%E5%BA%93/" title="导入外部库"><img class="cover" src="/img/default_cover1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">导入外部库</div></div><div class="info-2"><div class="info-item-1">等待填坑中 </div></div></div></a><a class="pagination-related" href="/2026/02/27/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E9%A1%B9%E7%9B%AE%E8%84%9A%E6%9C%AC%E7%BB%93%E6%9E%84/" title="项目脚本结构"><img class="cover" src="/img/default_cover3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">项目脚本结构</div></div><div class="info-2"><div class="info-item-1">前言当我返回来看我一年前陆陆续续开发的游戏脚本时发现我当时压根就没有进行分类，四五十个脚本就这么和和睦睦的挤在一起，现在随着对项目理解的加深，深刻意识到了一个合理的项目结构到底有多重要，故写下此篇文章，记录自己的学习与理解 定义项目脚本结构对我而言就是Script文件夹下的文件层级。根据脚本的类别，所属场景等对脚本进行合理分类。在游戏项目的开发中，一个合理的脚本分类结构可以提升开发时的效率和...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Boomber3</div><div class="author-info-description">做些学习日记和生活记录</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Boomber3" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3200529173@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/95936433" target="_blank" title="B站"><i class="fab fa-bilibili" style="color: #fb7299;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-number">1.</span> <span class="toc-text">核心设计原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ScriptableObject"><span class="toc-number"></span> <span class="toc-text">ScriptableObject</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">实现步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">创建数据配置类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%85%B7%E4%BD%93%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">创建具体的配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">在业务代码中使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JSON-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number"></span> <span class="toc-text">JSON 配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JSON%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">JSON文件创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89JSON%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">定义JSON数据模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">实现数据管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%B8%AD%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%99%A8%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">在业务代码中访问数据管理器获取数据配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Excel%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">Excel配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-%E8%BF%99%E9%87%8C%E4%BB%A5%E4%BD%BF%E7%94%A8CsvHelper%E5%BA%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">实现(这里以使用CsvHelper库实现)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E8%A1%A8%E6%A0%BC%E5%A1%AB%E5%86%99%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">新建表格填写数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E4%B8%BAcsv%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">导出为csv文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B-%E4%B8%8EJson%E6%96%B9%E6%B3%95%E4%B8%80%E8%87%B4"><span class="toc-number">1.3.</span> <span class="toc-text">定义数据模型(与Json方法一致)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0CSV%E8%A7%A3%E6%9E%90%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">实现CSV解析工具类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.5.</span> <span class="toc-text">全局数据管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%BD%BF%E7%94%A8"><span class="toc-number">1.6.</span> <span class="toc-text">业务代码使用</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E6%B8%B8%E6%88%8F%E7%B1%BB%E5%9E%8B/" title="游戏类型"><img src="/img/default_cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="游戏类型"/></a><div class="content"><a class="title" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E6%B8%B8%E6%88%8F%E7%B1%BB%E5%9E%8B/" title="游戏类型">游戏类型</a><time datetime="2026-02-27T19:48:39.000Z" title="发表于 2026-02-28 03:48:39">2026-02-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E5%AF%BC%E5%85%A5%E5%A4%96%E9%83%A8%E5%BA%93/" title="导入外部库"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="导入外部库"/></a><div class="content"><a class="title" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E5%AF%BC%E5%85%A5%E5%A4%96%E9%83%A8%E5%BA%93/" title="导入外部库">导入外部库</a><time datetime="2026-02-27T19:40:13.000Z" title="发表于 2026-02-28 03:40:13">2026-02-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/" title="数据存储与配置的三种方案"><img src="/img/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据存储与配置的三种方案"/></a><div class="content"><a class="title" href="/2026/02/28/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8/" title="数据存储与配置的三种方案">数据存储与配置的三种方案</a><time datetime="2026-02-27T16:17:03.000Z" title="发表于 2026-02-28 00:17:03">2026-02-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/27/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E9%A1%B9%E7%9B%AE%E8%84%9A%E6%9C%AC%E7%BB%93%E6%9E%84/" title="项目脚本结构"><img src="/img/default_cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="项目脚本结构"/></a><div class="content"><a class="title" href="/2026/02/27/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E9%A1%B9%E7%9B%AE%E8%84%9A%E6%9C%AC%E7%BB%93%E6%9E%84/" title="项目脚本结构">项目脚本结构</a><time datetime="2026-02-27T15:33:27.000Z" title="发表于 2026-02-27 23:33:27">2026-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/27/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E6%90%9C%E6%89%93%E6%92%A4%E6%B8%B8%E6%88%8F%E6%9C%BA%E5%88%B6%E6%8B%86%E8%A7%A3/" title="搜打撤游戏机制拆解"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="搜打撤游戏机制拆解"/></a><div class="content"><a class="title" href="/2026/02/27/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E6%90%9C%E6%89%93%E6%92%A4%E6%B8%B8%E6%88%8F%E6%9C%BA%E5%88%B6%E6%8B%86%E8%A7%A3/" title="搜打撤游戏机制拆解">搜打撤游戏机制拆解</a><time datetime="2026-02-26T17:18:21.000Z" title="发表于 2026-02-27 01:18:21">2026-02-27</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Boomber3</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4-b1</a></span></div></div><script type="text/javascript" id="maid-script" src="https://unpkg.com/mermaid@10.6.0/dist/mermaid.min.js?v=undefined"></script><script>if (window.mermaid) {
+  var options = JSON.parse(document.getElementById('maid-script').getAttribute('mermaidoptioins'));
+  mermaid.initialize(options);
+}</script></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4-b1"></script><script src="/js/main.js?v=5.5.4-b1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: false,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
