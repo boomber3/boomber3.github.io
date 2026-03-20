@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件处理工具 - 在线工具</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 12px 24px; border: none; background: #fff; cursor: pointer; border-radius: 8px; font-size: 16px; transition: all 0.3s; }
+        .tab-btn.active { background: #409eff; color: white; }
+        
+        .panel { display: none; background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .panel.active { display: block; }
+        
+        .section { margin-bottom: 24px; }
+        .section h3 { color: #333; margin-bottom: 12px; font-size: 16px; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #666; font-size: 14px; }
+        .form-group input[type="number"], .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        
+        .radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .radio-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        
+        .file-drop { border: 2px dashed #ddd; border-radius: 8px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .file-drop:hover { border-color: #409eff; background: #f0f7ff; }
+        .file-drop.dragover { border-color: #409eff; background: #e6f0ff; }
+        .file-drop input { display: none; }
+        
+        .btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+        .btn-primary { background: #409eff; color: white; }
+        .btn-primary:hover { background: #66b1ff; }
+        .btn-success { background: #67c23a; color: white; }
+        .btn-success:hover { background: #85ce61; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        
+        .file-list { margin-top: 20px; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; }
+        .file-item .info { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .file-item .checkbox { width: 18px; height: 18px; }
+        .file-item .name { flex: 1; word-break: break-all; }
+        .file-item .size { color: #999; font-size: 12px; }
+        .file-item .est-size { color: #67c23a; font-size: 12px; margin-left: 10px; }
+        .file-item .status { font-size: 12px; margin-left: 10px; padding: 2px 8px; border-radius: 4px; }
+        .file-item .status-pending { color: #e6a23c; background: #fdf6ec; }
+        .file-item .status-done { color: #67c23a; background: #f0f9eb; }
+        .file-item .remove { color: #f56c6c; cursor: pointer; padding: 4px 8px; }
+        
+        .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 20px; }
+        .preview-item { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
+        .preview-item img { width: 100%; height: 120px; object-fit: cover; }
+        .preview-item .name { padding: 8px; font-size: 12px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .result-area { margin-top: 20px; padding: 20px; background: #f0f7ff; border-radius: 8px; }
+        .result-area h4 { margin-bottom: 12px; color: #333; }
+        
+        .stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+        .stat-item { background: white; padding: 12px 20px; border-radius: 6px; }
+        .stat-item .label { font-size: 12px; color: #999; }
+        .stat-item .value { font-size: 18px; color: #333; font-weight: bold; }
+        
+        .slider-container { display: flex; align-items: center; gap: 12px; }
+        .slider-container input[type="range"] { flex: 1; }
+        .slider-container span { min-width: 40px; text-align: right; }
+        
+        .compress-option { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 12px; background: #f9f9f9; border-radius: 6px; }
+        .compress-option input[type="checkbox"] { width: 18px; height: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ 文件处理工具</h1>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('image')">📷 图片压缩</button>
+            <button class="tab-btn" onclick="switchTab('convert')">🔄 格式转换</button>
+        </div>
+        
+        <!-- 图片压缩面板 -->
+        <div id="imagePanel" class="panel active">
+            <div class="section">
+                <h3>压缩模式</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="scaleMode" value="proportional" checked onchange="updateEstSize()"> 等比压缩</label>
+                    <label><input type="radio" name="scaleMode" value="fixed" onchange="updateEstSize()"> 目标长宽</label>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>压缩参数</h3>
+                <div class="form-group" id="propGroup">
+                    <label>缩放比例 (1-100%)</label>
+                    <div class="slider-container">
+                        <input type="range" id="scalePercent" min="10" max="100" value="50" oninput="updateEstSize()">
+                        <span id="scalePercentVal">50%</span>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="fixedGroup" style="display:none;">
+                    <div style="display: flex; gap: 12px;">
+                        <div style="flex:1;">
+                            <label>目标宽度 (px)</label>
+                            <input type="number" id="targetWidth" value="1920" min="100" oninput="updateEstSize()">
+                        </div>
+                        <div style="flex:1;">
+                            <label>目标高度 (px)</label>
+                            <input type="number" id="targetHeight" value="1080" min="100" oninput="updateEstSize()">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>压缩质量</label>
+                    <div class="slider-container">
+                        <input type="range" id="imgQuality" min="10" max="100" value="80" oninput="updateEstSize()">
+                        <span id="imgQualityVal">80%</span>
+                    </div>
+                </div>
+                
+                <div class="result-area" id="imgEstSize" style="display:none;">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="label">原文件大小</div>
+                            <div class="value" id="origSize">0 KB</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">预计压缩后</div>
+                            <div class="value" id="estSize" style="color:#67c23a;">0 KB</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">节省空间</div>
+                            <div class="value" id="savedSize" style="color:#409eff;">0%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">输出尺寸</div>
+                            <div class="value" id="outputSize">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>选择图片</h3>
+                <div class="file-drop" id="imgDrop" onclick="triggerFileSelect('imgInput')">
+                    <input type="file" id="imgInput" accept="image/*" multiple onchange="handleImgSelect()">
+                    <p>点击选择图片或拖拽文件到此处</p>
+                    <p style="font-size:12px;color:#999;margin-top:8px;">支持批量选择</p>
+                </div>
+                
+                <div class="file-list" id="imgFileList"></div>
+            </div>
+            
+            <button class="btn btn-primary" id="compressBtn" onclick="compressImages()" disabled>开始压缩</button>
+            <button class="btn" id="clearImgBtn" onclick="clearAllImages()" style="display:none;margin-left:10px;background:#f56c6c;color:white;">清空全部</button>
+            <button class="btn btn-success" id="downloadAllBtn" onclick="downloadAllImages()" style="display:none;margin-left:10px;">批量下载</button>
+        </div>
+        
+        <!-- 格式转换面板 -->
+        <div id="convertPanel" class="panel">
+            <div class="section">
+                <h3>输出格式</h3>
+                <div class="form-group">
+                    <select id="outputFormat">
+                        <option value="pdf">PDF</option>
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>压缩选项</h3>
+                <div class="compress-option">
+                    <input type="checkbox" id="enableCompress" onchange="toggleConvertCompress()">
+                    <label for="enableCompress">启用压缩</label>
+                </div>
+                <div class="form-group" id="convertQualityGroup" style="display:none;margin-top:12px;">
+                    <label>压缩质量</label>
+                    <div class="slider-container">
+                        <input type="range" id="convertQuality" min="10" max="100" value="80" oninput="document.getElementById('convertQualityVal').textContent = this.value + '%'">
+                        <span id="convertQualityVal">80%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>选择文件</h3>
+                <div class="file-drop" id="convertDrop" onclick="triggerFileSelect('convertInput')">
+                    <input type="file" id="convertInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple onchange="handleConvertSelect()">
+                    <p>点击选择文件或拖拽到此处</p>
+                    <p style="font-size:12px;color:#999;margin-top:8px;">支持 PDF、Word、JPG、PNG 批量选择</p>
+                </div>
+                
+                <div class="file-list" id="convertFileList"></div>
+            </div>
+            
+            <button class="btn btn-primary" id="convertBtn" onclick="startConvertFiles()" disabled>开始转换</button>
+            <button class="btn" id="clearConvertBtn" onclick="clearAllConvertFiles()" style="display:none;margin-left:10px;background:#f56c6c;color:white;">清空全部</button>
+            <button class="btn btn-success" id="downloadConvertBtn" onclick="downloadConverted()" style="display:none;margin-left:10px;">下载转换后的文件</button>
+        </div>
+    </div>
+
+    <script>
+        let jsPDF = null;
+        
+        if (window.jspdf && window.jspdf.jsPDF) {
+            try {
+                jsPDF = window.jspdf.jsPDF;
+            } catch (e) {
+                console.warn('jsPDF 加载失败，PDF 转换功能将不可用:', e);
+            }
+        } else {
+            console.warn('jsPDF 库未加载，PDF 转换功能将不可用');
+        }
+        
+        let imageFiles = [];
+        let compressedImages = [];
+        let convertFiles = [];
+        let convertedFiles = [];
+        let isConverted = false;
+
+        function triggerFileSelect(inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.click();
+            }
+        }
+
+        function setupDragDrop() {
+            const imgDrop = document.getElementById('imgDrop');
+            const convertDrop = document.getElementById('convertDrop');
+
+            if (imgDrop) {
+                imgDrop.addEventListener('dragover', e => { e.preventDefault(); imgDrop.classList.add('dragover'); });
+                imgDrop.addEventListener('dragleave', () => imgDrop.classList.remove('dragover'));
+                imgDrop.addEventListener('drop', e => {
+                    e.preventDefault();
+                    imgDrop.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const dt = new DataTransfer();
+                        Array.from(files).forEach(f => dt.items.add(f));
+                        document.getElementById('imgInput').files = dt.files;
+                        handleImgSelect();
+                    }
+                });
+            }
+
+            if (convertDrop) {
+                convertDrop.addEventListener('dragover', e => { e.preventDefault(); convertDrop.classList.add('dragover'); });
+                convertDrop.addEventListener('dragleave', () => convertDrop.classList.remove('dragover'));
+                convertDrop.addEventListener('drop', e => {
+                    e.preventDefault();
+                    convertDrop.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const dt = new DataTransfer();
+                        Array.from(files).forEach(f => dt.items.add(f));
+                        document.getElementById('convertInput').files = dt.files;
+                        handleConvertSelect();
+                    }
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupDragDrop);
+        } else {
+            setupDragDrop();
+        }
+        
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+            
+            if (tab === 'image') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('imagePanel').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('convertPanel').classList.add('active');
+            }
+        }
+        
+        // 图片压缩相关
+        document.querySelectorAll('input[name="scaleMode"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'proportional') {
+                    document.getElementById('propGroup').style.display = 'block';
+                    document.getElementById('fixedGroup').style.display = 'none';
+                } else {
+                    document.getElementById('propGroup').style.display = 'none';
+                    document.getElementById('fixedGroup').style.display = 'block';
+                }
+            });
+        });
+        
+        function handleImgSelect() {
+            const files = Array.from(document.getElementById('imgInput').files);
+            
+            const promises = files.map(file => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        resolve({ width: img.width, height: img.height });
+                        URL.revokeObjectURL(img.src);
+                    };
+                    img.onerror = () => resolve({ width: 0, height: 0 });
+                    img.src = URL.createObjectURL(file);
+                });
+            });
+
+            Promise.all(promises).then(dimensions => {
+                files.forEach((file, idx) => {
+                    file._width = dimensions[idx].width;
+                    file._height = dimensions[idx].height;
+                    imageFiles.push(file);
+                });
+                document.getElementById('imgInput').value = '';
+                renderImgList();
+                updateEstSize();
+            });
+        }
+        
+        function renderImgList() {
+            const list = document.getElementById('imgFileList');
+            list.innerHTML = imageFiles.map((file, idx) => `
+                <div class="file-item">
+                    <div class="info">
+                        <input type="checkbox" class="checkbox" checked data-idx="${idx}">
+                        <span class="name">${file.name}</span>
+                        <span class="size">${formatSize(file.size)}</span>
+                        <span class="dimensions">${file._width && file._height ? file._width + '×' + file._height : ''}</span>
+                    </div>
+                    <span class="remove" onclick="removeImg(${idx})" title="删除">✕</span>
+                </div>
+            `).join('');
+            document.getElementById('compressBtn').disabled = imageFiles.length === 0;
+            document.getElementById('clearImgBtn').style.display = imageFiles.length > 0 ? 'inline-block' : 'none';
+            document.getElementById('downloadAllBtn').style.display = imageFiles.length > 0 ? 'inline-block' : 'none';
+            document.getElementById('imgEstSize').style.display = imageFiles.length > 0 ? 'block' : 'none';
+        }
+        
+        function removeImg(idx) {
+            imageFiles.splice(idx, 1);
+            renderImgList();
+            updateEstSize();
+        }
+        
+        function clearAllImages() {
+            imageFiles = [];
+            renderImgList();
+            updateEstSize();
+        }
+        
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+        
+        function updateEstSize() {
+            if (imageFiles.length === 0) return;
+            
+            const scaleMode = document.querySelector('input[name="scaleMode"]:checked').value;
+            const quality = parseInt(document.getElementById('imgQuality').value) / 100;
+            
+            document.getElementById('scalePercentVal').textContent = document.getElementById('scalePercent').value + '%';
+            document.getElementById('imgQualityVal').textContent = document.getElementById('imgQuality').value + '%';
+            
+            let totalOrig = 0;
+            let totalEst = 0;
+            let totalOutputWidth = 0;
+            let totalOutputHeight = 0;
+            let hasValidSize = true;
+            
+            imageFiles.forEach(file => {
+                totalOrig += file.size;
+                
+                let scaleFactor, outputWidth, outputHeight;
+                
+                if (scaleMode === 'proportional') {
+                    scaleFactor = parseInt(document.getElementById('scalePercent').value) / 100;
+                    outputWidth = Math.round((file._width || 0) * scaleFactor);
+                    outputHeight = Math.round((file._height || 0) * scaleFactor);
+                } else {
+                    const targetWidth = parseInt(document.getElementById('targetWidth').value) || 1920;
+                    const targetHeight = parseInt(document.getElementById('targetHeight').value) || 1080;
+                    
+                    if (file._width && file._height) {
+                        const widthRatio = targetWidth / file._width;
+                        const heightRatio = targetHeight / file._height;
+                        scaleFactor = Math.min(widthRatio, heightRatio);
+                        outputWidth = Math.round(file._width * scaleFactor);
+                        outputHeight = Math.round(file._height * scaleFactor);
+                    } else {
+                        outputWidth = targetWidth;
+                        outputHeight = targetHeight;
+                        scaleFactor = 0.5;
+                    }
+                }
+                
+                if (!file._width || !file._height) {
+                    hasValidSize = false;
+                }
+                
+                totalOutputWidth += outputWidth;
+                totalOutputHeight += outputHeight;
+                totalEst += file.size * scaleFactor * scaleFactor * quality * 0.7;
+            });
+            
+            document.getElementById('origSize').textContent = formatSize(totalOrig);
+            document.getElementById('estSize').textContent = formatSize(totalEst);
+            
+            const saved = totalOrig > 0 ? ((totalOrig - totalEst) / totalOrig * 100).toFixed(1) : 0;
+            document.getElementById('savedSize').textContent = saved + '%';
+            
+            if (hasValidSize && imageFiles.length > 0) {
+                if (imageFiles.length === 1) {
+                    const file = imageFiles[0];
+                    let scaleFactor, outputWidth, outputHeight;
+                    if (scaleMode === 'proportional') {
+                        scaleFactor = parseInt(document.getElementById('scalePercent').value) / 100;
+                        outputWidth = Math.round(file._width * scaleFactor);
+                        outputHeight = Math.round(file._height * scaleFactor);
+                    } else {
+                        const targetWidth = parseInt(document.getElementById('targetWidth').value) || 1920;
+                        const targetHeight = parseInt(document.getElementById('targetHeight').value) || 1080;
+                        const widthRatio = targetWidth / file._width;
+                        const heightRatio = targetHeight / file._height;
+                        scaleFactor = Math.min(widthRatio, heightRatio);
+                        outputWidth = Math.round(file._width * scaleFactor);
+                        outputHeight = Math.round(file._height * scaleFactor);
+                    }
+                    document.getElementById('outputSize').textContent = outputWidth + ' × ' + outputHeight + ' px';
+                } else {
+                    const avgWidth = Math.round(totalOutputWidth / imageFiles.length);
+                    const avgHeight = Math.round(totalOutputHeight / imageFiles.length);
+                    document.getElementById('outputSize').textContent = '平均 ' + avgWidth + ' × ' + avgHeight + ' px';
+                }
+            } else {
+                document.getElementById('outputSize').textContent = '-';
+            }
+        }
+        
+        async function compressImages() {
+            const scaleMode = document.querySelector('input[name="scaleMode"]:checked').value;
+            const quality = parseInt(document.getElementById('imgQuality').value) / 100;
+            
+            const btn = document.getElementById('compressBtn');
+            btn.disabled = true;
+            btn.textContent = '处理中...';
+            
+            compressedImages = [];
+            
+            for (const file of imageFiles) {
+                try {
+                    const blob = await compressImage(file, scaleMode, quality);
+                    compressedImages.push({
+                        name: file.name.replace(/\.[^.]+$/, '.jpg'),
+                        blob: blob
+                    });
+                } catch (e) {
+                    console.error('压缩失败:', e);
+                }
+            }
+            
+            btn.textContent = '压缩完成';
+            document.getElementById('downloadAllBtn').style.display = 'inline-block';
+        }
+        
+        function compressImage(file, scaleMode, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        let width, height;
+                        if (scaleMode === 'proportional') {
+                            const scale = parseInt(document.getElementById('scalePercent').value) / 100;
+                            width = img.width * scale;
+                            height = img.height * scale;
+                        } else {
+                            width = parseInt(document.getElementById('targetWidth').value);
+                            height = parseInt(document.getElementById('targetHeight').value);
+                        }
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        canvas.toBlob(blob => resolve(blob), 'image/jpeg', quality);
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+        
+        function downloadAllImages() {
+            compressedImages.forEach((item, idx) => {
+                setTimeout(() => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(item.blob);
+                    a.download = item.name;
+                    a.click();
+                }, idx * 200);
+            });
+        }
+        
+        // 格式转换相关
+        function toggleConvertCompress() {
+            const enabled = document.getElementById('enableCompress').checked;
+            document.getElementById('convertQualityGroup').style.display = enabled ? 'block' : 'none';
+        }
+        
+        function handleConvertSelect() {
+            const files = Array.from(document.getElementById('convertInput').files);
+            files.forEach(file => convertFiles.push(file));
+            document.getElementById('convertInput').value = '';
+            isConverted = false;
+            renderConvertList();
+        }
+        
+        function renderConvertList() {
+            const list = document.getElementById('convertFileList');
+            const outputFormat = document.getElementById('outputFormat').value;
+            const enableCompress = document.getElementById('enableCompress').checked;
+            const quality = enableCompress ? parseInt(document.getElementById('convertQuality').value) / 100 : 1;
+            
+            list.innerHTML = convertFiles.map((file, idx) => {
+                // 估算转换后大小
+                let estSize = file.size;
+                if (outputFormat === 'jpg' || outputFormat === 'png') {
+                    estSize = file.size * 0.6 * quality;
+                } else if (outputFormat === 'pdf') {
+                    estSize = file.size * 0.8;
+                }
+                
+                const origName = file.name.replace(/\.[^.]+$/, '');
+                return `
+                    <div class="file-item">
+                        <div class="info">
+                            <input type="checkbox" class="checkbox" checked data-idx="${idx}">
+                            <span class="name">${origName}.${outputFormat}</span>
+                            <span class="size">${formatSize(file.size)}</span>
+                            <span class="est-size">→ ${formatSize(estSize)}</span>
+                            <span class="status ${isConverted ? 'status-done' : 'status-pending'}">${isConverted ? '✓ 已转换' : '未转换'}</span>
+                        </div>
+                        <span class="remove" onclick="removeConvertFile(${idx})" title="删除">✕</span>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('convertBtn').disabled = convertFiles.length === 0;
+            document.getElementById('clearConvertBtn').style.display = convertFiles.length > 0 ? 'inline-block' : 'none';
+            const downloadBtn = document.getElementById('downloadConvertBtn');
+            downloadBtn.style.display = convertFiles.length > 0 ? 'inline-block' : 'none';
+            downloadBtn.disabled = !isConverted || convertFiles.length === 0;
+            downloadBtn.textContent = isConverted ? '下载转换后的文件' : '请先转换文件';
+        }
+        
+        document.getElementById('outputFormat').addEventListener('change', renderConvertList);
+        
+        function removeConvertFile(idx) {
+            convertFiles.splice(idx, 1);
+            if (convertFiles.length === 0) {
+                isConverted = false;
+                convertedFiles = [];
+            }
+            renderConvertList();
+        }
+        
+        function clearAllConvertFiles() {
+            convertFiles = [];
+            convertedFiles = [];
+            isConverted = false;
+            renderConvertList();
+        }
+        
+        async function startConvertFiles() {
+            const outputFormat = document.getElementById('outputFormat').value;
+            const enableCompress = document.getElementById('enableCompress').checked;
+            const quality = enableCompress ? parseInt(document.getElementById('convertQuality').value) / 100 : 1;
+            
+            const btn = document.getElementById('convertBtn');
+            btn.disabled = true;
+            btn.textContent = '处理中...';
+            
+            convertedFiles = [];
+            
+            for (const file of convertFiles) {
+                try {
+                    const result = await convertFile(file, outputFormat, quality);
+                    convertedFiles.push(result);
+                } catch (e) {
+                    console.error('转换失败:', e);
+                }
+            }
+            
+            btn.textContent = '转换完成';
+            isConverted = true;
+            renderConvertList();
+        }
+        
+        function convertFile(file, outputFormat, quality) {
+            return new Promise(async (resolve, reject) => {
+                const origName = file.name.replace(/\.[^.]+$/, '');
+                
+                if (outputFormat === 'pdf') {
+                    if (!jsPDF) {
+                        reject(new Error('jsPDF 库未加载，请检查网络连接后刷新页面'));
+                        return;
+                    }
+                    
+                    // 转换为PDF
+                    if (file.type.startsWith('image/') || file.name.match(/\.(jpg|jpeg|png)$/i)) {
+                        // 图片转PDF
+                        const imgData = await readFileAsDataURL(file);
+                        const img = new Image();
+                        img.src = imgData;
+                        await new Promise(r => img.onload = r);
+                        
+                        const pdf = new jsPDF({
+                            orientation: img.width > img.height ? 'l' : 'p',
+                            unit: 'px',
+                            format: [img.width, img.height]
+                        });
+                        pdf.addImage(imgData, 'JPEG', 0, 0, img.width, img.height);
+                        
+                        const blob = pdf.output('blob');
+                        resolve({ name: origName + '.pdf', blob: blob });
+                    } else {
+                        // 其他格式暂时无法处理
+                        reject(new Error('暂不支持此格式转换为PDF'));
+                    }
+                } else {
+                    // 图片格式转换
+                    if (!file.type.startsWith('image/')) {
+                        reject(new Error('暂不支持此格式转换为图片'));
+                        return;
+                    }
+                    
+                    const imgData = await readFileAsDataURL(file);
+                    const img = new Image();
+                    img.src = imgData;
+                    await new Promise(r => img.onload = r);
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const mimeType = outputFormat === 'jpg' ? 'image/jpeg' : 'image/png';
+                    const blob = await new Promise(r => canvas.toBlob(r, mimeType, quality));
+                    resolve({ name: origName + '.' + outputFormat, blob: blob });
+                }
+            });
+        }
+        
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function downloadConverted() {
+            convertedFiles.forEach((item, idx) => {
+                setTimeout(() => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(item.blob);
+                    a.download = item.name;
+                    a.click();
+                }, idx * 300);
+            });
+        }
+    </script>
+</body>
+</html>

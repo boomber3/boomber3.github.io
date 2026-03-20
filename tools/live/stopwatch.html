@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直播正计时（自动计时+隐藏按钮）</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: transparent; /* 直播姬透明背景核心 */
+            font-family: "微软雅黑", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .stopwatch {
+            font-size: 40px;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 5px #00000080; /* 文字阴影增强辨识度 */
+            background: transparent;
+            border: none;
+        }
+        /* 直接隐藏所有控制按钮 */
+        .controls {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="stopwatch" class="stopwatch">0小时0分钟0秒</div>
+        <!-- 按钮保留但隐藏，不影响逻辑 -->
+        <div class="controls">
+            <button id="startBtn" class="btn">开始</button>
+            <button id="pauseBtn" class="btn" disabled>暂停</button>
+            <button id="resetBtn" class="btn btn-reset">重置</button>
+        </div>
+    </div>
+
+    <script>
+        // 核心变量
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval = null;
+        const stopwatchEl = document.getElementById('stopwatch');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const STORAGE_KEY = 'live_stopwatch_data';
+
+        // 格式化时间：改为「X小时X分钟X秒」（恢复秒数显示）
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60; // 新增秒数计算
+            // 拼接成「X小时X分钟X秒」格式，比如 1小时25分钟30秒、0小时3分钟5秒
+            return `${hours}小时${minutes}分钟${seconds}秒`;
+        }
+
+        // 保存数据到本地存储（保留，确保刷新/重启后继续计时）
+        function saveData() {
+            const data = {
+                elapsedTime: elapsedTime,
+                isRunning: timerInterval !== null
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // 从本地存储恢复数据
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                elapsedTime = data.elapsedTime;
+                stopwatchEl.textContent = formatTime(elapsedTime);
+            }
+            // 页面加载后自动开始计时（无需手动点开始）
+            startTimer();
+        }
+
+        // 自动开始计时的核心函数
+        function startTimer() {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(() => {
+                elapsedTime = Date.now() - startTime;
+                stopwatchEl.textContent = formatTime(elapsedTime);
+                saveData(); // 每秒保存一次，防止刷新丢失
+            }, 1000);
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+        }
+
+        // 保留暂停/重置逻辑（如需手动操作可临时取消按钮隐藏）
+        pauseBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            saveData();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            elapsedTime = 0;
+            stopwatchEl.textContent = '0小时0分钟0秒'; // 重置文本同步秒数
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            localStorage.removeItem(STORAGE_KEY);
+        });
+
+        // 页面加载完成后自动执行：恢复数据 + 开始计时
+        window.onload = loadData;
+    </script>
+</body>
+</html>
