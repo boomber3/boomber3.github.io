@@ -8,40 +8,111 @@
         body {
             margin: 0;
             padding: 20px;
-            background: transparent; /* 直播姬透明背景核心 */
+            background: transparent;
             font-family: "微软雅黑", Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+        .container {
+            position: relative;
+            text-align: center;
+        }
         .stopwatch {
             font-size: 40px;
             color: #ffffff;
             font-weight: bold;
-            text-shadow: 0 0 5px #00000080; /* 文字阴影增强辨识度 */
+            text-shadow: 0 0 5px #00000080;
             background: transparent;
             border: none;
+            cursor: default;
         }
-        /* 直接隐藏所有控制按钮 */
         .controls {
-            display: none !important;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 10px;
+            display: none;
+            gap: 8px;
+            z-index: 100;
+        }
+        .container:hover .controls {
+            display: flex;
+        }
+        .btn {
+            padding: 6px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #fff;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-reset {
+            background: #ff6b6b;
+            color: white;
+        }
+        .btn-reset:hover {
+            background: #ff5252;
+        }
+        .btn-record {
+            background: #4ecdc4;
+            color: white;
+        }
+        .btn-record:hover {
+            background: #45b7af;
+        }
+        .records {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 60px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 100;
+        }
+        .container:hover .records {
+            display: flex;
+        }
+        .record-item {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .record-time {
+            color: #4ecdc4;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="stopwatch" class="stopwatch">0小时0分钟0秒</div>
-        <!-- 按钮保留但隐藏，不影响逻辑 -->
         <div class="controls">
-            <button id="startBtn" class="btn">开始</button>
+            <button id="startBtn" class="btn">开始/继续</button>
             <button id="pauseBtn" class="btn" disabled>暂停</button>
+            <button id="recordBtn" class="btn btn-record">记录</button>
             <button id="resetBtn" class="btn btn-reset">重置</button>
         </div>
+        <div id="records" class="records"></div>
     </div>
 
     <script>
-        // 核心变量
         let startTime = 0;
         let elapsedTime = 0;
         let timerInterval = null;
@@ -49,19 +120,19 @@
         const startBtn = document.getElementById('startBtn');
         const pauseBtn = document.getElementById('pauseBtn');
         const resetBtn = document.getElementById('resetBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const recordsEl = document.getElementById('records');
         const STORAGE_KEY = 'live_stopwatch_data';
+        const RECORDS_KEY = 'live_stopwatch_records';
 
-        // 格式化时间：改为「X小时X分钟X秒」（恢复秒数显示）
         function formatTime(ms) {
             const totalSeconds = Math.floor(ms / 1000);
             const hours = Math.floor(totalSeconds / 3600);
             const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60; // 新增秒数计算
-            // 拼接成「X小时X分钟X秒」格式，比如 1小时25分钟30秒、0小时3分钟5秒
+            const seconds = totalSeconds % 60;
             return `${hours}小时${minutes}分钟${seconds}秒`;
         }
 
-        // 保存数据到本地存储（保留，确保刷新/重启后继续计时）
         function saveData() {
             const data = {
                 elapsedTime: elapsedTime,
@@ -70,7 +141,6 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        // 从本地存储恢复数据
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
@@ -78,23 +148,20 @@
                 elapsedTime = data.elapsedTime;
                 stopwatchEl.textContent = formatTime(elapsedTime);
             }
-            // 页面加载后自动开始计时（无需手动点开始）
             startTimer();
         }
 
-        // 自动开始计时的核心函数
         function startTimer() {
             startTime = Date.now() - elapsedTime;
             timerInterval = setInterval(() => {
                 elapsedTime = Date.now() - startTime;
                 stopwatchEl.textContent = formatTime(elapsedTime);
-                saveData(); // 每秒保存一次，防止刷新丢失
+                saveData();
             }, 1000);
             startBtn.disabled = true;
             pauseBtn.disabled = false;
         }
 
-        // 保留暂停/重置逻辑（如需手动操作可临时取消按钮隐藏）
         pauseBtn.addEventListener('click', () => {
             clearInterval(timerInterval);
             timerInterval = null;
@@ -107,14 +174,61 @@
             clearInterval(timerInterval);
             timerInterval = null;
             elapsedTime = 0;
-            stopwatchEl.textContent = '0小时0分钟0秒'; // 重置文本同步秒数
+            stopwatchEl.textContent = '0小时0分钟0秒';
             startBtn.disabled = false;
             pauseBtn.disabled = true;
             localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(RECORDS_KEY);
+            renderRecords();
         });
 
-        // 页面加载完成后自动执行：恢复数据 + 开始计时
-        window.onload = loadData;
+        function addRecord() {
+            const recordTime = formatTime(elapsedTime);
+            const records = JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]');
+            const recordEntry = {
+                time: recordTime,
+                timestamp: Date.now()
+            };
+            records.push(recordEntry);
+            if (records.length > 10) {
+                records.shift();
+            }
+            localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+            renderRecords();
+        }
+
+        function renderRecords() {
+            const records = JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]');
+            if (records.length === 0) {
+                recordsEl.style.display = 'none';
+                return;
+            }
+            recordsEl.style.display = 'flex';
+            recordsEl.innerHTML = records.map((r, i) => 
+                `<div class="record-item">记录${i + 1}: <span class="record-time">${r.time}</span></div>`
+            ).join('');
+        }
+
+        recordBtn.addEventListener('click', addRecord);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (timerInterval !== null) {
+                    pauseBtn.click();
+                } else {
+                    startBtn.click();
+                }
+            } else if (e.code === 'KeyR') {
+                e.preventDefault();
+                addRecord();
+            }
+        });
+
+        window.onload = () => {
+            loadData();
+            renderRecords();
+        };
     </script>
 </body>
 </html>
