@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI卡面生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #333;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group select option {
+            background: #fff;
+            color: #333;
+        }
+
+        .color-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-input-row input[type="text"] {
+            flex: 1;
+        }
+
+        .color-input-row input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+
+        .color-input-row input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-input-row input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .color-input input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-input input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-input input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .color-input input[type="text"] {
+            flex: 1;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-area input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #a0a0a0;
+        }
+
+        .upload-preview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .upload-preview.has-image {
+            display: block;
+        }
+
+        .image-position-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .preview-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-preview {
+            width: 360px;
+            height: 480px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .card-type-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-type-btn {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .card-type-btn:hover {
+            border-color: #667eea;
+        }
+
+        .card-type-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .font-select {
+            font-family: var(--font-preview, sans-serif);
+        }
+
+        .mbti-type-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mbti-type-btn {
+            padding: 8px 4px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .mbti-type-btn:hover {
+            border-color: #667eea;
+        }
+
+        .mbti-type-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .role-upload-area {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .role-upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .role-upload-area input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .role-upload-area img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .role-upload-area img.has-image {
+            display: block;
+        }
+
+        .role-upload-placeholder {
+            text-align: center;
+            color: #a0a0a0;
+        }
+
+        .role-upload-placeholder span {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .image-opacity-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .image-opacity-group input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            -webkit-appearance: none;
+        }
+
+        .image-opacity-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .image-opacity-value {
+            min-width: 40px;
+            text-align: right;
+            color: #555;
+        }
+
+        .spacing-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .spacing-group input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            -webkit-appearance: none;
+        }
+
+        .spacing-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .spacing-value {
+            min-width: 40px;
+            text-align: right;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ MBTI卡面生成器</h1>
+        
+        <div class="main-content">
+            <div class="panel">
+                <div class="panel-title">⚙️ 卡片配置</div>
+                
+                <div class="form-group">
+                    <label>标题文字</label>
+                    <input type="text" id="titleTextInput" placeholder="如：为你的排球人格类型是" value="为你的排球人格类型是">
+                </div>
+
+                <div class="form-group">
+                    <label>类型中文名</label>
+                    <div class="color-input-row">
+                        <input type="text" id="mbtiNameInput" placeholder="如：建筑师" value="建筑师">
+                        <input type="color" id="mbtiNameColor" value="#e74c3c">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>类型英文简称</label>
+                    <div class="color-input-row">
+                        <input type="text" id="mbtiShortInput" placeholder="如：Architect" value="Architect">
+                        <input type="color" id="mbtiShortColor" value="#2c3e50">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>人格简介</label>
+                    <div class="color-input-row">
+                        <input type="text" id="mbtiDescInput" placeholder="输入人格简介" value="富有想象力和战略性的思想家，一切皆在计划之中。">
+                        <input type="color" id="mbtiDescColor" value="#7f8c8d">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>选择卡片风格</label>
+                    <div class="card-type-selector">
+                        <button class="card-type-btn" data-type="classic">经典</button>
+                        <button class="card-type-btn active" data-type="neon">霓虹</button>
+                        <button class="card-type-btn" data-type="gradient">渐变</button>
+                        <button class="card-type-btn" data-type="minimal">简约</button>
+                        <button class="card-type-btn" data-type="neon">霓虹</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>选择字体</label>
+                    <select id="fontFamily" class="font-select">
+                        <option value="serif" style="font-family: serif;">衬线体 (Serif)</option>
+                        <option value="sans-serif" style="font-family: sans-serif;" selected>无衬线 (Sans-Serif)</option>
+                        <option value="cursive" style="font-family: cursive;">手写体 (Cursive)</option>
+                        <option value="fantasy" style="font-family: fantasy;">装饰体 (Fantasy)</option>
+                        <option value="monospace" style="font-family: monospace;">等宽体 (Monospace)</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                        <option value="'PingFang SC', sans-serif">苹方</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>字体颜色</label>
+                    <div class="color-group">
+                        <div class="color-input">
+                            <input type="color" id="fontColor" value="#333333">
+                            <input type="text" id="fontColorText" value="#333333">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>背景颜色</label>
+                    <div class="color-group">
+                        <div class="color-input">
+                            <input type="color" id="bgColor1" value="#f8f9fa">
+                            <input type="text" id="bgColor1Text" value="#f8f9fa">
+                        </div>
+                        <div class="color-input">
+                            <input type="color" id="bgColor2" value="#ffffff">
+                            <input type="text" id="bgColor2Text" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>上传角色图片</label>
+                    <div class="role-upload-area" id="roleUploadArea">
+                        <input type="file" id="roleImage" accept="image/*">
+                        <div class="role-upload-placeholder" id="roleUploadPlaceholder">
+                            <span>📷</span>
+                            <p>点击或拖拽上传角色图片</p>
+                        </div>
+                        <img id="roleImagePreview" class="role-upload-preview" alt="角色图片">
+                    </div>
+                    <div class="image-opacity-group">
+                        <label>图片透明度:</label>
+                        <input type="range" id="imageOpacity" min="0" max="100" value="80">
+                        <span class="image-opacity-value" id="opacityValue">80%</span>
+                    </div>
+
+                    <div class="spacing-group">
+                        <label>元素间距:</label>
+                        <input type="range" id="elementSpacing" min="5" max="80" value="49">
+                        <span class="spacing-value" id="spacingValue">88px</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel preview-panel">
+                <div class="panel-title">👁️ 预览</div>
+                <div class="card-preview">
+                    <canvas id="cardCanvas" width="720" height="960" class="card-canvas"></canvas>
+                </div>
+                <button class="download-btn" id="downloadBtn">下载卡片</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let roleImage = null;
+        let cardType = 'neon';
+
+        function init() {
+            createCardTypeButtons();
+            setupColorInputs();
+            setupRoleUpload();
+            setupEventListeners();
+            drawCard();
+        }
+
+        function createCardTypeButtons() {
+            document.querySelectorAll('.card-type-btn[data-type]').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.card-type-btn[data-type]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    cardType = btn.dataset.type;
+                    drawCard();
+                };
+            });
+        }
+
+        function setupColorInputs() {
+            const colorPairs = [
+                ['fontColor', 'fontColorText'],
+                ['bgColor1', 'bgColor1Text'],
+                ['bgColor2', 'bgColor2Text']
+            ];
+
+            colorPairs.forEach(([colorId, textId]) => {
+                const colorInput = document.getElementById(colorId);
+                const textInput = document.getElementById(textId);
+
+                colorInput.addEventListener('input', () => {
+                    textInput.value = colorInput.value;
+                    drawCard();
+                });
+
+                textInput.addEventListener('input', () => {
+                    if (/^#[0-9A-Fa-f]{6}$/.test(textInput.value)) {
+                        colorInput.value = textInput.value;
+                        drawCard();
+                    }
+                });
+            });
+        }
+
+        function setupRoleUpload() {
+            const fileInput = document.getElementById('roleImage');
+            const placeholder = document.getElementById('roleUploadPlaceholder');
+            const preview = document.getElementById('roleImagePreview');
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            roleImage = img;
+                            preview.src = event.target.result;
+                            preview.classList.add('has-image');
+                            placeholder.style.display = 'none';
+                            drawCard();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            const uploadArea = document.getElementById('roleUploadArea');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    fileInput.files = e.dataTransfer.files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('fontFamily').addEventListener('change', () => {
+                document.documentElement.style.setProperty('--font-preview', document.getElementById('fontFamily').value);
+                drawCard();
+            });
+            
+            document.getElementById('imageOpacity').addEventListener('input', (e) => {
+                document.getElementById('opacityValue').textContent = e.target.value + '%';
+                drawCard();
+            });
+
+            document.getElementById('elementSpacing').addEventListener('input', (e) => {
+                document.getElementById('spacingValue').textContent = Math.round(e.target.value * 1.8) + 'px';
+                drawCard();
+            });
+
+            ['mbtiNameInput', 'mbtiShortInput', 'mbtiDescInput', 'mbtiNameColor', 'mbtiShortColor', 'mbtiDescColor', 'titleTextInput'].forEach(id => {
+                document.getElementById(id).addEventListener('input', drawCard);
+            });
+
+            document.getElementById('downloadBtn').addEventListener('click', downloadCard);
+        }
+
+        function drawCard() {
+            const canvas = document.getElementById('cardCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            const bgColor1 = document.getElementById('bgColor1').value;
+            const bgColor2 = document.getElementById('bgColor2').value;
+            const fontFamily = document.getElementById('fontFamily').value;
+            const mbtiName = document.getElementById('mbtiNameInput').value || '建筑师';
+            const mbtiNameColor = document.getElementById('mbtiNameColor').value;
+            const mbtiShort = document.getElementById('mbtiShortInput').value || 'Architect';
+            const mbtiShortColor = document.getElementById('mbtiShortColor').value;
+            const mbtiDesc = document.getElementById('mbtiDescInput').value || '富有想象力和战略性的思想家，一切皆在计划之中。';
+            const mbtiDescColor = document.getElementById('mbtiDescColor').value;
+            const imageOpacity = parseInt(document.getElementById('imageOpacity').value) / 100;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, bgColor1);
+            gradient.addColorStop(1, bgColor2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            if (cardType === 'gradient') {
+                const radialGradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
+                radialGradient.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
+                radialGradient.addColorStop(1, 'rgba(118, 75, 162, 0.3)');
+                ctx.fillStyle = radialGradient;
+                ctx.fillRect(0, 0, width, height);
+            } else if (cardType === 'neon') {
+                ctx.strokeStyle = 'rgba(102, 126, 234, 0.5)';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(20, 20, width - 40, height - 40);
+                ctx.strokeStyle = 'rgba(118, 75, 162, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(40, 40, width - 80, height - 80);
+            }
+
+            let contentStartY = 80;
+
+            const fontColor = document.getElementById('fontColor').value;
+            const elementSpacing = parseInt(document.getElementById('elementSpacing').value) * 1.8;
+            const titleText = document.getElementById('titleTextInput').value || '为你的排球人格类型是';
+            ctx.fillStyle = fontColor;
+            ctx.textAlign = 'center';
+
+            ctx.font = '32px ' + fontFamily;
+            ctx.globalAlpha = 0.7;
+            ctx.fillText(titleText, width / 2, contentStartY);
+            ctx.globalAlpha = 1;
+
+            contentStartY += elementSpacing;
+            ctx.font = 'bold 60px ' + fontFamily;
+            ctx.fillStyle = mbtiNameColor;
+            ctx.fillText(mbtiName, width / 2, contentStartY);
+
+            contentStartY += elementSpacing + 15;
+            ctx.font = 'bold 84px ' + fontFamily;
+            ctx.fillStyle = mbtiShortColor;
+            ctx.fillText(mbtiShort, width / 2, contentStartY);
+
+            contentStartY += elementSpacing - 25;
+
+            if (roleImage) {
+                ctx.globalAlpha = imageOpacity;
+                const imgWidth = width * 0.55;
+                const imgHeight = roleImage.height * (imgWidth / roleImage.width);
+                const imgX = (width - imgWidth) / 2;
+                const imgY = contentStartY;
+
+                ctx.drawImage(roleImage, imgX, imgY, imgWidth, imgHeight);
+                ctx.globalAlpha = 1;
+                contentStartY = imgY + imgHeight + elementSpacing - 25;
+            }
+
+            ctx.font = '24px ' + fontFamily;
+            ctx.globalAlpha = 0.7;
+            ctx.fillStyle = mbtiDescColor;
+            const words = mbtiDesc.split('');
+            let line = '';
+            let lineY = contentStartY;
+            const maxWidth = width - 100;
+            
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i];
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && i > 0) {
+                    ctx.fillText(line, width / 2, lineY);
+                    line = words[i];
+                    lineY += 38;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, width / 2, lineY);
+            ctx.globalAlpha = 1;
+        }
+
+        function downloadCard() {
+            const canvas = document.getElementById('cardCanvas');
+            const link = document.createElement('a');
+            const mbtiName = document.getElementById('mbtiNameInput').value || 'mbti';
+            link.download = `mbti-card-${mbtiName}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        init();
+    </script>
+</body>
+</html>
