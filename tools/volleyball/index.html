@@ -1,0 +1,2535 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>BoomberBlog | BoomberBlog</title><meta name="author" content="Boomber3"><meta name="copyright" content="Boomber3"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="排球站位演示 | Volleyball Rotation                 :root {       --bg: #F0EDE5;       --surface: #FFFFFF;       --surface-2: #F7F5F0;       --court: #5BA4D9;       --court-shade: #4A8FC2;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BoomberBlog">
+<meta property="og:url" content="https://boomber3.github.io/tools/volleyball/index.html">
+<meta property="og:site_name" content="BoomberBlog">
+<meta property="og:description" content="排球站位演示 | Volleyball Rotation                 :root {       --bg: #F0EDE5;       --surface: #FFFFFF;       --surface-2: #F7F5F0;       --court: #5BA4D9;       --court-shade: #4A8FC2;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boomber3.github.io/img/avatar.png">
+<meta property="article:published_time" content="2026-07-26T19:35:51.805Z">
+<meta property="article:modified_time" content="2026-07-26T19:35:51.805Z">
+<meta property="article:author" content="Boomber3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boomber3.github.io/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://boomber3.github.io/tools/volleyball/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4-b1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'BoomberBlog',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(/img/background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fas fa-tools"></i><span> Tools</span></a></div><div class="menus_item"><a class="site-page" href="/play/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">BoomberBlog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fas fa-tools"></i><span> Tools</span></a></div><div class="menus_item"><a class="site-page" href="/play/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title"></h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>排球站位演示 | Volleyball Rotation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F0EDE5;
+      --surface: #FFFFFF;
+      --surface-2: #F7F5F0;
+      --court: #5BA4D9;
+      --court-shade: #4A8FC2;
+      --line: #FFFFFF;
+      --line-dim: rgba(255, 255, 255, 0.5);
+      --net-color: #555555;
+      --text: #1A2A44;
+      --text-muted: #7A8A9E;
+      --accent: #E8A000;
+      --accent-hover: #D09000;
+      --accent-dim: rgba(232, 160, 0, 0.2);
+      --border: rgba(0, 0, 0, 0.08);
+
+      --p-color: #3B7DD8;
+      --p-glow: rgba(59, 125, 216, 0.3);
+      --s-color: #27AE60;
+      --s-glow: rgba(39, 174, 96, 0.3);
+      --o-color: #E8A000;
+      --o-glow: rgba(232, 160, 0, 0.3);
+      --r-color: #E04040;
+      --r-glow: rgba(224, 64, 64, 0.3);
+      --opp-color: #C8D0DA;
+      --opp-border: #A0AAB8;
+
+      --danger: #E04040;
+      --danger-glow: rgba(224, 64, 64, 0.35);
+      --blocker-color: #D4960A;
+
+      --ease: cubic-bezier(0.25, 1, 0.5, 1);
+      --dur: 420ms;
+      --radius: 8px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 6px 10px 8px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      margin-bottom: 4px;
+    }
+
+    .header h1 {
+      font-size: clamp(0.95rem, 3.6vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .lang-btn {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3px 12px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .lang-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .top-controls {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .mode-rot-row {
+      display: flex;
+      gap: 6px;
+      align-items: stretch;
+    }
+
+    .mode-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ctrl-label {
+      font-size: 0.5rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+      text-align: center;
+      display: block;
+    }
+
+    .mode-btns {
+      display: flex;
+      gap: 3px;
+    }
+
+    .rot-col {
+      flex-shrink: 0;
+    }
+
+    .rot-btns {
+      display: flex;
+      gap: 3px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      min-width: 0;
+      padding: 4px 5px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      line-height: 1.1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .mode-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px var(--accent-dim);
+    }
+
+    .rot-btn {
+      width: 26px;
+      height: 26px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .rot-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .rot-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 1px 6px var(--accent-dim);
+      transform: scale(1.05);
+    }
+
+    .defense-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .defense-row .ctrl-label {
+      flex-shrink: 0;
+      margin-bottom: 0;
+      margin-right: 2px;
+    }
+
+    .def-btns {
+      display: flex;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .def-btn {
+      flex: 1;
+      min-width: 0;
+      padding: 4px 5px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.62rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .def-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .def-btn .def-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: box-shadow 0.25s;
+    }
+
+    .def-btn.active {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(224, 64, 64, 0.06);
+      box-shadow: 0 0 8px rgba(224, 64, 64, 0.12);
+    }
+
+    .def-btn.active .def-dot {
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .court-section {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 0;
+    }
+
+    .court {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(175deg, var(--court) 0%, var(--court-shade) 100%);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(0, 0, 0, 0.06);
+      touch-action: none;
+    }
+
+    .court::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 40px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .boundary {
+      position: absolute;
+      inset: 5%;
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .center-line {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      top: 27.5%;
+      height: 0;
+      border-top: 2px solid var(--line);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .attack-line {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      height: 0;
+      border-top: 1.5px dashed var(--line-dim);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .attack-line-opp {
+      top: 5%;
+    }
+
+    .attack-line-our {
+      top: 50%;
+    }
+
+    .net {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 27.5%;
+      transform: translateY(-50%);
+      height: 6px;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .net::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--net-color);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      border-radius: 1px;
+    }
+
+    .net::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 6px;
+      height: 18px;
+      background:
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.06) 1px, transparent 1px, transparent 8px),
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 6px);
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+    }
+
+    .zone-label {
+      position: absolute;
+      font-size: clamp(0.6rem, 2vw, 0.8rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.18);
+      pointer-events: none;
+      z-index: 3;
+      transform: translate(-50%, -50%);
+      user-select: none;
+    }
+
+    .half-label {
+      position: absolute;
+      font-size: clamp(0.55rem, 1.8vw, 0.7rem);
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+      z-index: 3;
+      user-select: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .half-label-opp {
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .half-label-our {
+      bottom: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .player {
+      position: absolute;
+      width: clamp(28px, 9.5%, 48px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      transition: left var(--dur) var(--ease), top var(--dur) var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s, opacity 0.25s;
+      z-index: 10;
+      user-select: none;
+      -webkit-user-select: none;
+      border: 2.5px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .player:active {
+      cursor: grabbing;
+    }
+
+    .player .label {
+      font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .player .pos-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: clamp(12px, 3vw, 16px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #fff;
+      border: 1.5px solid rgba(0, 0, 0, 0.1);
+      font-size: clamp(0.4rem, 1.3vw, 0.55rem);
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      transition: all 0.25s var(--ease);
+    }
+
+    .player[data-role="P"] {
+      background: var(--p-color);
+    }
+
+    .player[data-role="S"] {
+      background: var(--s-color);
+    }
+
+    .player[data-role="O"] {
+      background: var(--o-color);
+    }
+
+    .player[data-role="R"] {
+      background: var(--r-color);
+    }
+
+    .player.front-row {
+      border-color: rgba(255, 255, 255, 0.65);
+    }
+
+    .player.front-row[data-role="P"] {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 12px var(--p-glow);
+    }
+
+    .player.front-row[data-role="S"] {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 12px var(--s-glow);
+    }
+
+    .player.front-row[data-role="O"] {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 12px var(--o-glow);
+    }
+
+    .player.front-row[data-role="R"] {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 12px var(--r-glow);
+    }
+
+    .player.blocker {
+      border-color: var(--blocker-color) !important;
+      border-width: 3px !important;
+      box-shadow: 0 0 10px rgba(212, 150, 10, 0.4), 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    .player.blocker::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 6px solid var(--blocker-color);
+      pointer-events: none;
+    }
+
+    .player.blocker-secondary {
+      border-width: 2.5px !important;
+    }
+
+    .player.blocker-secondary::after {
+      display: none;
+    }
+
+    .player.blocker-secondary::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blocker-color);
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      pointer-events: none;
+    }
+
+    .player.opponent {
+      cursor: default;
+      border-color: var(--opp-border);
+      opacity: 0.7;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      background: var(--opp-color);
+      transition: left var(--dur) var(--ease), top var(--dur) var(--ease), box-shadow 0.3s, opacity 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .player.opponent .label {
+      font-size: clamp(0.45rem, 1.6vw, 0.6rem);
+      font-weight: 600;
+      color: #5A6A7A;
+      text-shadow: none;
+    }
+
+    .player.opponent .pos-badge {
+      display: none;
+    }
+
+    .player.opponent[data-role="P"] {
+      background: #B0C4DE;
+      border-color: #8AA0BE;
+    }
+
+    .player.opponent[data-role="S"] {
+      background: #A8D8B8;
+      border-color: #80B898;
+    }
+
+    .player.opponent[data-role="R"] {
+      background: #E0B0B0;
+      border-color: #C08888;
+    }
+
+    .player.opponent.attacking {
+      opacity: 1 !important;
+      z-index: 12 !important;
+      transform: translate(-50%, -50%) scale(1.1);
+      animation: attackPulse 1.5s ease-in-out infinite;
+    }
+
+    .player.opponent.attacking[data-role="P"] {
+      box-shadow: 0 0 16px var(--p-glow), 0 0 30px var(--danger-glow);
+      border-color: var(--p-color);
+    }
+
+    .player.opponent.attacking[data-role="S"] {
+      box-shadow: 0 0 16px var(--s-glow), 0 0 30px var(--danger-glow);
+      border-color: var(--s-color);
+    }
+
+    .player.opponent.attacking[data-role="R"] {
+      box-shadow: 0 0 16px var(--r-glow), 0 0 30px var(--danger-glow);
+      border-color: var(--r-color);
+    }
+
+    @keyframes attackPulse {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.18);
+      }
+    }
+
+    .attack-arrow {
+      position: absolute;
+      width: 3px;
+      z-index: 8;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s var(--ease);
+    }
+
+    .attack-arrow.visible {
+      opacity: 1;
+    }
+
+    .attack-arrow::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--danger) 0%, transparent 100%);
+      border-radius: 1px;
+    }
+
+    .attack-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid var(--danger);
+    }
+
+    .attack-arrow.left {
+      left: 20%;
+    }
+
+    .attack-arrow.center {
+      left: 50%;
+    }
+
+    .attack-arrow.right {
+      left: 80%;
+    }
+
+    .player.dragging {
+      z-index: 20 !important;
+      transform: translate(-50%, -50%) scale(1.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+      border-color: rgba(255, 255, 255, 0.7);
+      opacity: 0.92;
+      transition: box-shadow 0.15s, transform 0.15s var(--ease);
+    }
+
+    .info-bar {
+      text-align: center;
+      flex-shrink: 0;
+      min-height: 1.5em;
+      padding: 2px 0;
+    }
+
+    .info-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: clamp(0.65rem, 2.2vw, 0.78rem);
+      font-weight: 500;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .info-text .mode-name {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .info-text .separator {
+      color: rgba(0, 0, 0, 0.15);
+    }
+
+    .info-text .front-row-tag {
+      font-weight: 600;
+    }
+
+    .info-text .defense-tag {
+      color: var(--danger);
+      font-weight: 700;
+      animation: defenseTagPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes defenseTagPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .role-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .role-chip[data-role="P"] {
+      background: var(--p-color);
+    }
+
+    .role-chip[data-role="S"] {
+      background: var(--s-color);
+    }
+
+    .role-chip[data-role="O"] {
+      background: var(--o-color);
+    }
+
+    .role-chip[data-role="R"] {
+      background: var(--r-color);
+    }
+
+    .bottom-bar {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .action-row {
+      flex-shrink: 0;
+      display: flex;
+      gap: 4px;
+      align-items: stretch;
+      margin-bottom: 4px;
+    }
+
+    .reset-btn,
+    .export-btn {
+      flex: 1;
+      padding: 5px 6px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .reset-btn:hover,
+    .export-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .reset-btn:active,
+    .export-btn:active {
+      transform: scale(0.97);
+    }
+
+    .save-btn {
+      flex: 1;
+      padding: 5px 6px;
+      border: 1.5px solid rgba(39, 174, 96, 0.2);
+      border-radius: 5px;
+      background: rgba(39, 174, 96, 0.06);
+      color: var(--s-color);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .save-btn:hover {
+      background: rgba(39, 174, 96, 0.12);
+      border-color: var(--s-color);
+    }
+
+    .save-btn:active {
+      transform: scale(0.97);
+    }
+
+    .saved-dropdown-wrap {
+      flex: 1.2;
+      position: relative;
+      overflow: visible;
+    }
+
+    .saved-dropdown {
+      width: 100%;
+      height: 100%;
+      padding: 5px 8px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.62rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .saved-dropdown:hover {
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .saved-dropdown .dd-arrow {
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+      transition: transform 0.2s;
+    }
+
+    .saved-dropdown.open .dd-arrow {
+      transform: rotate(180deg);
+    }
+
+    .saved-dropdown .dd-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .saved-dropdown.open {
+      border-color: var(--accent);
+    }
+
+    .saved-dropdown.open+.saved-list-panel {
+      display: block;
+    }
+
+    .saved-list-panel {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 4px);
+      background: #fff;
+      border: 1.5px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .saved-list-panel .sp-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      cursor: pointer;
+      transition: background 0.15s var(--ease);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .saved-list-panel .sp-item:last-child {
+      border-bottom: none;
+    }
+
+    .saved-list-panel .sp-item:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .saved-list-panel .sp-item:active {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .saved-list-panel .sp-item-empty {
+      padding: 12px 10px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+    }
+
+    .saved-list-panel .sp-item-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .saved-list-panel .sp-item-def {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      margin-left: 5px;
+      border-radius: 3px;
+      background: var(--blocker-color);
+      color: #fff;
+    }
+
+    .saved-list-panel .sp-item-left {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .saved-list-panel .sp-item-del {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.15s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-left: 3px;
+    }
+
+    .saved-list-panel .sp-item-del:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .saved-def-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: var(--blocker-color);
+      color: #fff;
+      margin-left: 3px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-text {
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #fff;
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      opacity: 0;
+      transition: all 0.35s var(--ease);
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes courtFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .court {
+      animation: courtFadeIn 0.6s var(--ease) both;
+    }
+
+    .no-anim .player {
+      transition: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .player {
+        transition-duration: 0.01ms !important;
+      }
+
+      .court {
+        animation-duration: 0.01ms !important;
+      }
+
+      .toast {
+        transition-duration: 0.01ms !important;
+      }
+
+      .player.opponent.attacking {
+        animation: none !important;
+      }
+
+      .info-text .defense-tag {
+        animation: none !important;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        padding: 16px 20px;
+      }
+
+      .rot-btn {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+    <header class="header" id="header">
+      <h1 id="pageTitle">排球站位演示</h1>
+      <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    </header>
+
+    <div class="top-controls">
+      <div class="mode-rot-row">
+        <div class="mode-col">
+          <span class="ctrl-label" data-i18n="formation">站位模式</span>
+          <div class="mode-btns">
+            <button class="mode-btn active" data-mode="P-S-O" id="mode1">主副二</button>
+            <button class="mode-btn" data-mode="P-O-S" id="mode2">主二副</button>
+          </div>
+        </div>
+        <div class="rot-col">
+          <span class="ctrl-label" data-i18n="rotation">轮次</span>
+          <div class="rot-btns">
+            <button class="rot-btn active" data-rot="1">1</button>
+            <button class="rot-btn" data-rot="2">2</button>
+            <button class="rot-btn" data-rot="3">3</button>
+            <button class="rot-btn" data-rot="4">4</button>
+            <button class="rot-btn" data-rot="5">5</button>
+            <button class="rot-btn" data-rot="6">6</button>
+          </div>
+        </div>
+      </div>
+      <div class="defense-row">
+        <span class="ctrl-label" data-i18n="defense">防守</span>
+        <div class="def-btns">
+          <button class="def-btn" data-attack="P" id="defP">
+            <span class="def-dot" style="background:var(--p-color)"></span>
+            <span id="defPLabel">主攻进攻</span>
+          </button>
+          <button class="def-btn" data-attack="S" id="defS">
+            <span class="def-dot" style="background:var(--s-color)"></span>
+            <span id="defSLabel">副攻进攻</span>
+          </button>
+          <button class="def-btn" data-attack="R" id="defR">
+            <span class="def-dot" style="background:var(--r-color)"></span>
+            <span id="defRLabel">接应进攻</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="reset-btn" id="resetBtn" data-i18n="reset">重置位置</button>
+      <button class="save-btn" id="saveBtn">保存站位</button>
+      <button class="export-btn" id="exportBtn" data-i18n="exportImg">导出图片</button>
+      <div class="saved-dropdown-wrap" id="savedDropdownWrap">
+        <div class="saved-dropdown" id="savedDropdown">
+          <span class="dd-label" id="ddLabel">— —</span>
+          <span class="dd-arrow">&#9660;</span>
+        </div>
+        <div class="saved-list-panel" id="savedPanel"></div>
+      </div>
+    </div>
+
+    <section class="court-section">
+      <div class="court no-anim" id="court">
+        <div class="boundary"></div>
+        <div class="center-line"></div>
+        <div class="attack-line attack-line-opp"></div>
+        <div class="attack-line attack-line-our"></div>
+        <div class="net"></div>
+
+        <div class="half-label half-label-opp" data-i18n="opponent">对方场地</div>
+        <div class="half-label half-label-our" data-i18n="ourCourt">我方场地</div>
+
+        <div class="zone-label" style="left:20%; top:40%">4</div>
+        <div class="zone-label" style="left:50%; top:40%">3</div>
+        <div class="zone-label" style="left:80%; top:40%">2</div>
+        <div class="zone-label" style="left:20%; top:71%">5</div>
+        <div class="zone-label" style="left:50%; top:71%">6</div>
+        <div class="zone-label" style="left:80%; top:71%">1</div>
+
+        <div class="attack-arrow left" id="arrowLeft" style="top:5%; height:18%"></div>
+        <div class="attack-arrow center" id="arrowCenter" style="top:5%; height:18%"></div>
+        <div class="attack-arrow right" id="arrowRight" style="top:5%; height:18%"></div>
+
+        <div class="player opponent" id="opp4" data-role="P"><span class="label" id="oppLabel4">主攻</span></div>
+        <div class="player opponent" id="opp3" data-role="S"><span class="label" id="oppLabel3">副攻</span></div>
+        <div class="player opponent" id="opp2" data-role="R"><span class="label" id="oppLabel2">接应</span></div>
+
+        <div class="player" id="p0"><span class="label"></span><span class="pos-badge"></span></div>
+        <div class="player" id="p1"><span class="label"></span><span class="pos-badge"></span></div>
+        <div class="player" id="p2"><span class="label"></span><span class="pos-badge"></span></div>
+        <div class="player" id="p3"><span class="label"></span><span class="pos-badge"></span></div>
+        <div class="player" id="p4"><span class="label"></span><span class="pos-badge"></span></div>
+        <div class="player" id="p5"><span class="label"></span><span class="pos-badge"></span></div>
+      </div>
+    </section>
+
+    <div class="info-bar">
+      <div class="info-text" id="infoText"></div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="legend" id="legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--p-color)"></div><span class="legend-text" id="legendP">P
+            主攻</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--s-color)"></div><span class="legend-text" id="legendS">S
+            副攻</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--o-color)"></div><span class="legend-text" id="legendO">O
+            二传</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--r-color)"></div><span class="legend-text" id="legendR">R
+            接应</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--blocker-color)"></div><span class="legend-text"
+            id="legendBlock">&#9650; <span data-i18n="blocker">拦网</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const FORMATIONS = {
+      'P-S-O': [
+        { role: 'P', basePos: 1 },
+        { role: 'O', basePos: 2 },
+        { role: 'S', basePos: 3 },
+        { role: 'P', basePos: 4 },
+        { role: 'R', basePos: 5 },
+        { role: 'S', basePos: 6 },
+      ],
+      'P-O-S': [
+        { role: 'P', basePos: 1 },
+        { role: 'S', basePos: 2 },
+        { role: 'O', basePos: 3 },
+        { role: 'P', basePos: 4 },
+        { role: 'S', basePos: 5 },
+        { role: 'R', basePos: 6 },
+      ],
+    };
+
+    const POS_COORDS = {
+      4: { x: 20, y: 40 },
+      3: { x: 50, y: 40 },
+      2: { x: 80, y: 40 },
+      5: { x: 20, y: 71 },
+      6: { x: 50, y: 71 },
+      1: { x: 80, y: 71 },
+    };
+
+    const OPP_COORDS = {
+      4: { x: 82, y: 23 },
+      3: { x: 50, y: 23 },
+      2: { x: 18, y: 23 },
+    };
+
+    const OPP_ROLES = {
+      4: 'P',
+      3: 'S',
+      2: 'R',
+    };
+
+    const DEFENSE_POSITIONS = {
+      'P': {
+        4: { role: 'S', x: 78, y: 34, block: true },
+        3: { role: 'P', x: 62, y: 37, block: 2 },
+        2: { role: 'O', x: 72, y: 46 },
+        5: { role: 'R', x: 10, y: 69 },
+        6: { role: 'R', x: 50, y: 83 },
+        1: { role: 'R', x: 72, y: 74 },
+      },
+      'S': {
+        3: { role: 'S', x: 50, y: 34, block: true },
+        2: { role: 'O', x: 78, y: 54 },
+        4: { role: 'P', x: 22, y: 54 },
+        5: { role: 'R', x: 18, y: 74 },
+        6: { role: 'R', x: 50, y: 86 },
+        1: { role: 'R', x: 82, y: 74 },
+      },
+      'R': {
+        2: { role: 'P', x: 16, y: 34, block: true },
+        3: { role: 'O', x: 32, y: 37, block: 2 },
+        4: { role: 'S', x: 22, y: 54 },
+        5: { role: 'R', x: 26, y: 86 },
+        6: { role: 'R', x: 50, y: 83 },
+        1: { role: 'R', x: 90, y: 69 },
+      },
+    };
+
+    const ATTACKER_POS = { P: 4, S: 3, R: 2 };
+    const ATTACKER_ARROW = { P: 'right', S: 'center', R: 'left' };
+
+    const LABELS = {
+      zh: {
+        P: '主', S: '副', O: '二', R: '接',
+        title: '排球站位演示',
+        formation: '站位模式', rotation: '轮次',
+        defense: '防守', reset: '重置位置',
+        opponent: '对方场地', ourCourt: '我方场地', frontRow: '前排',
+        blocker: '拦网',
+        legendP: 'P 主攻', legendS: 'S 副攻', legendO: 'O 二传', legendR: 'R 接应',
+        modePSO: '主副二', modePOS: '主二副',
+        roundN: '第{n}轮',
+        resetToast: '已重置',
+        defP: '主攻进攻', defS: '副攻进攻', defR: '接应进攻',
+        oppP: '主攻', oppS: '副攻', oppR: '接应',
+        exportImg: '导出图片', exportToast: '图片已保存', exportError: '导出失败',
+        savePos: '保存站位', saveNamePrompt: '请输入站位名称', saveNameDefault: '站位',
+        savedPos: '已保存的站位', savedEmpty: '暂无保存的站位',
+        saveToast: '已保存站位', loadToast: '已加载站位', deleteToast: '已删除站位',
+      },
+      en: {
+        P: 'P', S: 'S', O: 'O', R: 'R',
+        title: 'Volleyball Rotation',
+        formation: 'FORMATION', rotation: 'ROTATION',
+        defense: 'DEFENSE', reset: 'Reset Positions',
+        opponent: 'OPPONENT', ourCourt: 'OUR COURT', frontRow: 'Front',
+        blocker: 'Block',
+        legendP: 'P Outside', legendS: 'S Middle', legendO: 'O Setter', legendR: 'R Opposite',
+        modePSO: 'P-S-O', modePOS: 'P-O-S',
+        roundN: 'R{n}', resetToast: 'Reset',
+        defP: 'OH Attack', defS: 'MB Attack', defR: 'OPP Attack',
+        oppP: 'OH', oppS: 'MB', oppR: 'OPP',
+        exportImg: 'Export Image', exportToast: 'Image saved', exportError: 'Export failed',
+        savePos: 'Save', saveNamePrompt: 'Enter position name', saveNameDefault: 'Position',
+        savedPos: 'Saved Positions', savedEmpty: 'No saved positions',
+        saveToast: 'Position saved', loadToast: 'Position loaded', deleteToast: 'Position deleted',
+      },
+    };
+
+    const ROLE_NAMES = {
+      zh: { P: '主攻', S: '副攻', O: '二传', R: '接应' },
+      en: { P: 'OH', S: 'MB', O: 'SET', R: 'OPP' },
+    };
+
+    let currentMode = 'P-S-O';
+    let currentRotation = 1;
+    let lang = 'zh';
+    let defenseMode = null;
+    let draggingEl = null;
+
+    const court = document.getElementById('court');
+    const infoText = document.getElementById('infoText');
+    const toast = document.getElementById('toast');
+
+    const playerEls = [];
+    for (let i = 0; i < 6; i++) playerEls.push(document.getElementById('p' + i));
+
+    const oppPlayers = {
+      4: document.getElementById('opp4'),
+      3: document.getElementById('opp3'),
+      2: document.getElementById('opp2'),
+    };
+
+    const arrows = {
+      left: document.getElementById('arrowLeft'),
+      center: document.getElementById('arrowCenter'),
+      right: document.getElementById('arrowRight'),
+    };
+
+    function getPosition(basePos, rotation) {
+      const steps = rotation - 1;
+      return ((basePos - 1 - steps) % 6 + 6) % 6 + 1;
+    }
+
+    function getLineup(mode, rotation) {
+      const config = FORMATIONS[mode];
+      const lineup = new Array(6);
+      config.forEach(player => {
+        const pos = getPosition(player.basePos, rotation);
+        lineup[pos - 1] = player.role;
+      });
+      return lineup;
+    }
+
+    function render() {
+      const config = FORMATIONS[currentMode];
+      const L = LABELS[lang];
+      const RN = ROLE_NAMES[lang];
+      const isDefense = defenseMode !== null;
+
+      config.forEach((player, index) => {
+        const el = playerEls[index];
+        const pos = getPosition(player.basePos, currentRotation);
+
+        el.setAttribute('data-role', player.role);
+        el.querySelector('.label').textContent = L[player.role];
+        el.querySelector('.pos-badge').textContent = pos;
+
+        if ([2, 3, 4].includes(pos)) {
+          el.classList.add('front-row');
+        } else {
+          el.classList.remove('front-row');
+        }
+        el.classList.remove('blocker', 'blocker-secondary');
+
+        if (el !== draggingEl) {
+          el.style.left = POS_COORDS[pos].x + '%';
+          el.style.top = POS_COORDS[pos].y + '%';
+        }
+      });
+
+      for (const pos of [4, 3, 2]) {
+        const el = oppPlayers[pos];
+        const coord = OPP_COORDS[pos];
+        const role = OPP_ROLES[pos];
+        const isAttacking = isDefense && ATTACKER_POS[defenseMode] === pos;
+
+        el.setAttribute('data-role', role);
+
+        const oppRoleKey = { P: 'oppP', S: 'oppS', R: 'oppR' }[role];
+        el.querySelector('.label').textContent = L[oppRoleKey];
+
+        el.style.left = coord.x + '%';
+        el.style.top = coord.y + '%';
+
+        if (isAttacking) {
+          el.classList.add('attacking');
+        } else {
+          el.classList.remove('attacking');
+        }
+      }
+
+      for (const dir of ['left', 'center', 'right']) {
+        if (isDefense && ATTACKER_ARROW[defenseMode] === dir) {
+          arrows[dir].classList.add('visible');
+        } else {
+          arrows[dir].classList.remove('visible');
+        }
+      }
+
+      updateInfo();
+
+      document.getElementById('pageTitle').textContent = L.title;
+      document.getElementById('resetBtn').textContent = L.reset;
+      document.getElementById('mode1').textContent = L.modePSO;
+      document.getElementById('mode2').textContent = L.modePOS;
+      document.getElementById('defPLabel').textContent = L.defP;
+      document.getElementById('defSLabel').textContent = L.defS;
+      document.getElementById('defRLabel').textContent = L.defR;
+      document.querySelectorAll('[data-i18n="formation"]').forEach(el => el.textContent = L.formation);
+      document.querySelectorAll('[data-i18n="rotation"]').forEach(el => el.textContent = L.rotation);
+      document.querySelectorAll('[data-i18n="defense"]').forEach(el => el.textContent = L.defense);
+      document.querySelectorAll('[data-i18n="opponent"]').forEach(el => el.textContent = L.opponent);
+      document.querySelectorAll('[data-i18n="ourCourt"]').forEach(el => el.textContent = L.ourCourt);
+      document.querySelectorAll('[data-i18n="blocker"]').forEach(el => el.textContent = L.blocker);
+      document.getElementById('legendP').textContent = L.legendP;
+      document.getElementById('legendS').textContent = L.legendS;
+      document.getElementById('legendO').textContent = L.legendO;
+      document.getElementById('legendR').textContent = L.legendR;
+      document.getElementById('exportBtn').textContent = L.exportImg;
+      document.getElementById('saveBtn').textContent = L.savePos;
+      document.querySelectorAll('[data-i18n="savedPos"]').forEach(el => el.textContent = L.savedPos);
+    }
+
+    function updateInfo() {
+      const L = LABELS[lang];
+      const RN = ROLE_NAMES[lang];
+      const lineup = getLineup(currentMode, currentRotation);
+      const isDefense = defenseMode !== null;
+
+      const frontRoles = [lineup[3], lineup[2], lineup[1]];
+      const modeLabel = currentMode === 'P-S-O' ? L.modePSO : L.modePOS;
+      const roundLabel = L.roundN.replace('{n}', currentRotation);
+
+      let chips = frontRoles.map(role =>
+        '<span class="role-chip" data-role="' + role + '">' + L[role] + ' ' + RN[role] + '</span>'
+      ).join(' ');
+
+      let html =
+        '<span class="mode-name">' + modeLabel + '</span>' +
+        '<span class="separator">\u00B7</span>' +
+        '<span>' + roundLabel + '</span>';
+
+      if (isDefense) {
+        const attackLabel = L['def' + defenseMode];
+        html += '<span class="separator">\u00B7</span>' +
+          '<span class="defense-tag">' + attackLabel + '</span>';
+      } else {
+        html += '<span class="separator">\u00B7</span>' +
+          '<span class="front-row-tag">' + L.frontRow + '</span> ' + chips;
+      }
+
+      infoText.innerHTML = html;
+    }
+
+    function initDrag(el) {
+      let isDragging = false;
+
+      function getPointer(e) {
+        return e.touches ? e.touches[0] : e;
+      }
+
+      function onStart(e) {
+        if (el.classList.contains('opponent')) return;
+        e.preventDefault();
+        isDragging = true;
+        draggingEl = el;
+        el.classList.add('dragging');
+        el.style.transition = 'box-shadow 0.15s, transform 0.15s cubic-bezier(0.25, 1, 0.5, 1)';
+      }
+
+      function onMove(e) {
+        if (!isDragging || draggingEl !== el) return;
+        e.preventDefault();
+        const pointer = getPointer(e);
+        const rect = court.getBoundingClientRect();
+        const xPct = ((pointer.clientX - rect.left) / rect.width) * 100;
+        const yPct = ((pointer.clientY - rect.top) / rect.height) * 100;
+        el.style.left = Math.max(2, Math.min(98, xPct)) + '%';
+        el.style.top = Math.max(2, Math.min(98, yPct)) + '%';
+      }
+
+      function onEnd() {
+        if (!isDragging || draggingEl !== el) return;
+        isDragging = false;
+        el.classList.remove('dragging');
+        el.style.transition = '';
+        draggingEl = null;
+      }
+
+      el.addEventListener('mousedown', onStart);
+      el.addEventListener('touchstart', onStart, { passive: false });
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('mouseup', onEnd);
+      document.addEventListener('touchend', onEnd);
+    }
+
+    playerEls.forEach(el => initDrag(el));
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentMode = btn.dataset.mode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+    });
+
+    document.querySelectorAll('.rot-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentRotation = parseInt(btn.dataset.rot);
+        document.querySelectorAll('.rot-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+    });
+
+    document.querySelectorAll('.def-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const attackRole = btn.dataset.attack;
+        if (defenseMode === attackRole) {
+          defenseMode = null;
+          btn.classList.remove('active');
+        } else {
+          defenseMode = attackRole;
+          document.querySelectorAll('.def-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+        render();
+      });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      defenseMode = null;
+      document.querySelectorAll('.def-btn').forEach(b => b.classList.remove('active'));
+      render();
+      showToast(LABELS[lang].resetToast);
+    });
+
+    function captureCourtAsImage() {
+      return new Promise((resolve, reject) => {
+        try {
+          const rect = court.getBoundingClientRect();
+          const scale = 2;
+          const w = rect.width;
+          const h = rect.height;
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w * scale;
+          canvas.height = h * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.scale(scale, scale);
+
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#F0EDE5');
+          grad.addColorStop(1, '#F7F5F0');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+
+          const courtGrad = ctx.createLinearGradient(0, 0, 0, h);
+          courtGrad.addColorStop(0, '#5BA4D9');
+          courtGrad.addColorStop(1, '#4A8FC2');
+          ctx.fillStyle = courtGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          function pos(el) {
+            const r = el.getBoundingClientRect();
+            return { x: r.left - rect.left, y: r.top - rect.top, w: r.width, h: r.height };
+          }
+
+          const L = LABELS[lang];
+
+          const boundary = court.querySelector('.boundary');
+          if (boundary) {
+            const p = pos(boundary);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(p.x, p.y, p.w, p.h);
+          }
+
+          const centerLine = court.querySelector('.center-line');
+          if (centerLine) {
+            const p = pos(centerLine);
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + p.w, p.y);
+            ctx.stroke();
+          }
+
+          const atkLines = court.querySelectorAll('.attack-line');
+          atkLines.forEach(line => {
+            const p = pos(line);
+            ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 6]);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + p.w, p.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          });
+
+          function drawHalfLabel(el, text, color) {
+            if (!el) return;
+            const p = pos(el);
+            ctx.fillStyle = color || 'rgba(255,255,255,0.12)';
+            ctx.font = '600 11px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, p.x + p.w / 2, p.y + p.h / 2);
+          }
+
+          const oppLabel = court.querySelector('.half-label-opp');
+          const ourLabel = court.querySelector('.half-label-our');
+          if (oppLabel) drawHalfLabel(oppLabel, L.opponent);
+          if (ourLabel) drawHalfLabel(ourLabel, L.ourCourt);
+
+          function drawZoneLabel(el, text) {
+            if (!el) return;
+            const p = pos(el);
+            ctx.fillStyle = 'rgba(255,255,255,0.18)';
+            ctx.font = '700 14px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, p.x + p.w / 2, p.y + p.h / 2);
+          }
+
+          court.querySelectorAll('.zone-label').forEach(el => {
+            drawZoneLabel(el, el.textContent);
+          });
+
+          const net = court.querySelector('.net');
+          if (net) {
+            const p = pos(net);
+            ctx.fillStyle = '#555555';
+            ctx.fillRect(p.x, p.y, p.w, 6);
+            ctx.fillStyle = 'rgba(0,0,0,0.08)';
+            ctx.fillRect(p.x, p.y + 8, p.w, 16);
+            ctx.fillStyle = '#555555';
+            ctx.fillRect(p.x, p.y, p.w, 6);
+          }
+
+          const oppPlayersList = court.querySelectorAll('.player.opponent');
+          oppPlayersList.forEach(el => {
+            const p = pos(el);
+            const role = el.getAttribute('data-role') || '';
+
+            const colors = { P: '#B0C4DE', S: '#A8D8B8', R: '#E0B0B0' };
+            ctx.fillStyle = colors[role] || '#B0C4DE';
+            ctx.beginPath();
+            ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            if (el.classList.contains('attacking')) {
+              ctx.beginPath();
+              ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2 + 4, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(224, 64, 64, 0.3)';
+              ctx.fill();
+            }
+
+            const oppLabelKey = { P: 'oppP', S: 'oppS', R: 'oppR' };
+            const labelText = oppLabelKey[role] ? L[oppLabelKey[role]] : role;
+            ctx.fillStyle = '#5A6A7A';
+            ctx.font = '600 11px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(labelText, p.x + p.w / 2, p.y + p.h / 2);
+          });
+
+          const ourPlayers = court.querySelectorAll('.player:not(.opponent)');
+          ourPlayers.forEach(el => {
+            const p = pos(el);
+            const role = el.getAttribute('data-role') || '';
+
+            const colors = {
+              P: '#3B7DD8', S: '#27AE60', O: '#E8A000', R: '#E04040'
+            };
+            ctx.fillStyle = colors[role] || '#444';
+            ctx.beginPath();
+            ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (el.classList.contains('front-row')) {
+              ctx.beginPath();
+              ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2 + 2, 0, Math.PI * 2);
+              ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+              ctx.lineWidth = 2.5;
+              ctx.stroke();
+            }
+
+            if (el.classList.contains('blocker')) {
+              ctx.strokeStyle = '#D4960A';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2 + 1, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.fillStyle = '#D4960A';
+              ctx.beginPath();
+              ctx.moveTo(p.x + p.w / 2, p.y - 10);
+              ctx.lineTo(p.x + p.w / 2 - 5, p.y - 2);
+              ctx.lineTo(p.x + p.w / 2 + 5, p.y - 2);
+              ctx.closePath();
+              ctx.fill();
+            }
+            if (el.classList.contains('blocker-secondary')) {
+              ctx.strokeStyle = '#D4960A';
+              ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2 + 1, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.fillStyle = '#D4960A';
+              ctx.beginPath();
+              ctx.arc(p.x + p.w / 2, p.y - 7, 3.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            ctx.fillStyle = '#fff';
+            ctx.font = '700 14px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(L[role] || role, p.x + p.w / 2, p.y + p.h / 2);
+
+            const badge = el.querySelector('.pos-badge');
+            if (badge && badge.textContent) {
+              const bp = badge.getBoundingClientRect();
+              ctx.fillStyle = '#FFFFFF';
+              ctx.beginPath();
+              ctx.arc(bp.left - rect.left + bp.width / 2, bp.top - rect.top + bp.height / 2, bp.width / 2, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+              ctx.lineWidth = 1.5;
+              ctx.stroke();
+              ctx.fillStyle = '#7A8A9E';
+              ctx.font = '600 9px Outfit, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(badge.textContent, bp.left - rect.left + bp.width / 2, bp.top - rect.top + bp.height / 2);
+            }
+          });
+
+          const arrowList = court.querySelectorAll('.attack-arrow');
+          arrowList.forEach(el => {
+            if (el.classList.contains('visible')) {
+              const p = pos(el);
+              const grad2 = ctx.createLinearGradient(p.x, p.y, p.x, p.y + p.h);
+              grad2.addColorStop(0, '#E04040');
+              grad2.addColorStop(1, 'transparent');
+              ctx.fillStyle = grad2;
+              ctx.fillRect(p.x - 1, p.y, 3, p.h - 10);
+              ctx.fillStyle = '#E04040';
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y + p.h - 10);
+              ctx.lineTo(p.x - 5, p.y + p.h - 2);
+              ctx.lineTo(p.x + 5, p.y + p.h - 2);
+              ctx.closePath();
+              ctx.fill();
+            }
+          });
+
+          ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+          ctx.lineWidth = 1;
+          for (let x = 0; x < w; x += 40) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+          }
+          for (let y = 0; y < h; y += 40) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+          }
+
+          resolve(canvas);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }
+
+    document.getElementById('exportBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('exportBtn');
+      btn.disabled = true;
+      btn.textContent = '...';
+      try {
+        await new Promise(r => setTimeout(r, 100));
+        const canvas = await captureCourtAsImage();
+        const link = document.createElement('a');
+        link.download = 'volleyball-formation.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast(LABELS[lang].exportToast);
+      } catch (err) {
+        showToast(LABELS[lang].exportError);
+      }
+      btn.disabled = false;
+      btn.textContent = LABELS[lang].exportImg;
+    });
+
+    document.getElementById('langBtn').addEventListener('click', () => {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      document.getElementById('langBtn').textContent = lang === 'zh' ? 'EN' : '\u4E2D';
+      render();
+      renderSavedList();
+    });
+
+    const STORAGE_KEY = 'volleyball_positions';
+
+    function getSavedPositions() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSavedPositions(list) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch (e) { }
+    }
+
+    function saveCurrentPosition(name) {
+      const positions = getSavedPositions();
+      const players = {};
+      playerEls.forEach((el, i) => {
+        players['p' + i] = {
+          left: el.style.left || '50%',
+          top: el.style.top || '50%',
+        };
+      });
+      const data = { id: 'pos_' + Date.now(), name: '', time: '', players };
+      if (defenseMode !== null) {
+        data.defenseMode = defenseMode;
+        data.currentMode = currentMode;
+        data.currentRotation = currentRotation;
+      }
+      data.time = new Date().toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US');
+      const count = positions.length + 1;
+      data.name = name || (LABELS[lang].saveNameDefault + '-' + count);
+      positions.push(data);
+      saveSavedPositions(positions);
+      renderSavedList();
+      showToast(LABELS[lang].saveToast);
+    }
+
+    function loadSavedPosition(id) {
+      const positions = getSavedPositions();
+      const pos = positions.find(p => p.id === id);
+      if (!pos) return;
+      if (pos.defenseMode) {
+        defenseMode = pos.defenseMode;
+        currentMode = pos.currentMode || currentMode;
+        currentRotation = pos.currentRotation || currentRotation;
+        document.querySelectorAll('.def-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.attack === defenseMode);
+        });
+        document.querySelectorAll('.mode-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.mode === currentMode);
+        });
+        document.querySelectorAll('.rot-btn').forEach(b => {
+          b.classList.toggle('active', parseInt(b.dataset.rot) === currentRotation);
+        });
+      }
+      render();
+      Object.keys(pos.players).forEach(key => {
+        const idx = parseInt(key.replace('p', ''));
+        if (idx >= 0 && idx < playerEls.length) {
+          playerEls[idx].style.left = pos.players[key].left;
+          playerEls[idx].style.top = pos.players[key].top;
+        }
+      });
+      showToast(LABELS[lang].loadToast);
+    }
+
+    function deleteSavedPosition(id) {
+      let positions = getSavedPositions();
+      positions = positions.filter(p => p.id !== id);
+      saveSavedPositions(positions);
+      renderSavedList();
+      showToast(LABELS[lang].deleteToast);
+    }
+
+    function renderSavedList() {
+      const L = LABELS[lang];
+      const RN = ROLE_NAMES[lang];
+      const panel = document.getElementById('savedPanel');
+      const label = document.getElementById('ddLabel');
+      const positions = getSavedPositions();
+
+      if (positions.length === 0) {
+        label.textContent = L.savedEmpty;
+        panel.innerHTML = '<div class="sp-item-empty">' + L.savedEmpty + '</div>';
+        return;
+      }
+
+      label.textContent = L.savedPos + ' (' + positions.length + ')';
+
+      panel.innerHTML = positions.map(p => {
+        const name = escapeHtml(p.name || (L.saveNameDefault + '-?'));
+        const defTag = p.defenseMode
+          ? '<span class="sp-item-def">' + RN[p.defenseMode] + '</span>'
+          : '';
+        return '<div class="sp-item" data-id="' + p.id + '">' +
+          '<div class="sp-item-left">' +
+          '<span class="sp-item-name">' + name + '</span>' +
+          defTag +
+          '</div>' +
+          '<button class="sp-item-del" data-id="' + p.id + '">&times;</button>' +
+          '</div>';
+      }).join('');
+
+      panel.querySelectorAll('.sp-item').forEach(item => {
+        item.addEventListener('click', function (e) {
+          if (e.target.closest('.sp-item-del')) return;
+          closeDropdown();
+          loadSavedPosition(this.dataset.id);
+        });
+      });
+
+      panel.querySelectorAll('.sp-item-del').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          closeDropdown();
+          deleteSavedPosition(this.dataset.id);
+        });
+      });
+    }
+
+    function closeDropdown() {
+      document.getElementById('savedDropdown').classList.remove('open');
+    }
+
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    const dd = document.getElementById('savedDropdown');
+    dd.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dd.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.saved-dropdown-wrap')) {
+        dd.classList.remove('open');
+      }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const L = LABELS[lang];
+      const name = prompt(L.saveNamePrompt, L.saveNameDefault + '-' + (getSavedPositions().length + 1));
+      if (name === null) return;
+      saveCurrentPosition(name || '');
+    });
+
+    renderSavedList();
+
+    let toastTimer = null;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        currentRotation = currentRotation % 6 + 1;
+        document.querySelectorAll('.rot-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.rot-btn[data-rot="' + currentRotation + '"]').classList.add('active');
+        render();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        currentRotation = ((currentRotation - 2 + 6) % 6) + 1;
+        document.querySelectorAll('.rot-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.rot-btn[data-rot="' + currentRotation + '"]').classList.add('active');
+        render();
+      }
+    });
+
+    render();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        court.classList.remove('no-anim');
+      });
+    });
+  </script>
+</body>
+
+</html></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Boomber3</div><div class="author-info-description">做些学习日记和生活记录</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Boomber3"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Boomber3" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3200529173@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/95936433" target="_blank" title="B站"><i class="fab fa-bilibili" style="color: #fb7299;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/27/hello-world/" title="Hello World"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/07/27/hello-world/" title="Hello World">Hello World</a><time datetime="2026-07-26T19:24:31.102Z" title="发表于 2026-07-27 03:24:31">2026-07-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/29/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/SkyBox%E5%A4%A9%E7%A9%BA%E7%9B%92/" title="SkyBox天空盒"><img src="/img/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SkyBox天空盒"/></a><div class="content"><a class="title" href="/2026/03/29/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/SkyBox%E5%A4%A9%E7%A9%BA%E7%9B%92/" title="SkyBox天空盒">SkyBox天空盒</a><time datetime="2026-03-29T07:54:03.000Z" title="发表于 2026-03-29 15:54:03">2026-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/" title="渲染管线"><img src="/img/default_cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="渲染管线"/></a><div class="content"><a class="title" href="/2026/03/21/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/" title="渲染管线">渲染管线</a><time datetime="2026-03-20T16:59:39.000Z" title="发表于 2026-03-21 00:59:39">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/20/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BB%A5%E7%AE%AD%E4%BA%86%E4%B8%AA%E7%AE%AD%E5%92%8C%E7%BE%8A%E4%BA%86%E4%B8%AA%E7%BE%8A%E4%B8%BA%E4%BE%8B/" title="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例"/></a><div class="content"><a class="title" href="/2026/03/20/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BB%A5%E7%AE%AD%E4%BA%86%E4%B8%AA%E7%AE%AD%E5%92%8C%E7%BE%8A%E4%BA%86%E4%B8%AA%E7%BE%8A%E4%B8%BA%E4%BE%8B/" title="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例">微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例</a><time datetime="2026-03-20T04:25:40.000Z" title="发表于 2026-03-20 12:25:40">2026-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式"><img src="/img/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式"/></a><div class="content"><a class="title" href="/2026/03/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式">设计模式</a><time datetime="2026-03-19T10:36:08.000Z" title="发表于 2026-03-19 18:36:08">2026-03-19</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/"><span class="card-category-list-name">C++</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Vibe-Coding/"><span class="card-category-list-name">Vibe Coding</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">前端工具</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span class="card-category-list-name">微信小程序</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/"><span class="card-category-list-name">微信小程序开发</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C/"><span class="card-category-list-name">云数据库操作</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/"><span class="card-category-list-name">游戏开发</span><span class="card-category-list-count">5</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F/" style="font-size: 1.1em; color: #999">微信小游戏</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 1.23em; color: #999ea6">软件工程</a> <a href="/tags/STT/" style="font-size: 1.1em; color: #999">STT</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 1.1em; color: #999">渲染</a> <a href="/tags/%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" style="font-size: 1.23em; color: #999ea6">基本操作</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" style="font-size: 1.1em; color: #999">图形学</a> <a href="/tags/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4/" style="font-size: 1.1em; color: #999">协同过滤</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%9C%BA%E6%99%AF/" style="font-size: 1.1em; color: #999">游戏场景</a> <a href="/tags/Vibe-Coding/" style="font-size: 1.23em; color: #999ea6">Vibe Coding</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.23em; color: #999ea6">博客搭建</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.23em; color: #999ea6">数据结构</a> <a href="/tags/%E5%BD%95%E9%9F%B3/" style="font-size: 1.1em; color: #999">录音</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%EF%BC%8CAgent/" style="font-size: 1.1em; color: #999">微信小程序，Agent</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.5em; color: #99a9bf">微信小程序</a> <a href="/tags/Hexo/" style="font-size: 1.37em; color: #99a4b2">Hexo</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 1.1em; color: #999">组件</a> <a href="/tags/Unity/" style="font-size: 1.23em; color: #999ea6">Unity</a> <a href="/tags/AI/" style="font-size: 1.37em; color: #99a4b2">AI</a> <a href="/tags/Mermaid/" style="font-size: 1.1em; color: #999">Mermaid</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 1.1em; color: #999">游戏设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.37em; color: #99a4b2">算法</a> <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B/" style="font-size: 1.1em; color: #999">提示词工程</a> <a href="/tags/Markdown/" style="font-size: 1.23em; color: #999ea6">Markdown</a> <a href="/tags/%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">案例分析</a> <a href="/tags/hexo/" style="font-size: 1.1em; color: #999">hexo</a> <a href="/tags/C/" style="font-size: 1.1em; color: #999">C++</a> <a href="/tags/%E4%BA%91%E5%87%BD%E6%95%B0/" style="font-size: 1.1em; color: #999">云函数</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/02/">
+            <span class="card-archive-list-date">
+              二月 2026
+            </span>
+            <span class="card-archive-list-count">18</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/01/">
+            <span class="card-archive-list-date">
+              一月 2026
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">34</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-08-31T18:10:01.814Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Boomber3</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4-b1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4-b1"></script><script src="/js/main.js?v=5.5.4-b1"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script src="/js/banner-shader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,18 @@
+﻿File,Component Count,Original Components
+traffic_01,4,Cylinder; Cylinder.001; Cylinder.002; Cylinder.009
+traffic_02,6,Cylinder.003; Cylinder.005; Cylinder.006; Cylinder.004; Cylinder.007; Cylinder.008
+traffic_03,6,Cylinder.010; Cylinder.011; Cylinder.012; Cylinder.013; Cylinder.014; Cylinder.015
+traffic_04,6,Cylinder.016; Cylinder.017; Cylinder.018; Cylinder.019; Cylinder.020; Cylinder.021
+traffic_05,4,Cube; Cube.001; Cube.002; Cube.006
+traffic_06,4,Cube.003; Cube.004; Cube.005; Cube.007
+traffic_07,3,Cylinder.022; Plane; Cube.008
+traffic_08,4,Cylinder.023; Cube.009; Cylinder.024; Text.002
+traffic_09,4,Cylinder.025; Cube.010; Cylinder.026; Text.001
+traffic_10,3,Cylinder.027; Cube.011; Cylinder.028
+traffic_11,1,Cylinder.029
+traffic_12,1,Cylinder.030
+traffic_13,1,Cylinder.031
+traffic_14,1,Cylinder.032
+traffic_15,1,Cylinder.035
+traffic_18,3,Cube.016; Cube.017; Plane.001
+traffic_19,3,Cube.015; Cube.019; Plane.002

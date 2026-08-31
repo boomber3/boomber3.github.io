@@ -1,0 +1,1596 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>BoomberBlog | BoomberBlog</title><meta name="author" content="Boomber3"><meta name="copyright" content="Boomber3"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="视频序列帧截取 - 游戏素材处理              * { box-sizing: border-box; margin: 0; padding: 0; }         body {             margin: 0;             padding: 20px;             background: var(--bg-co">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BoomberBlog">
+<meta property="og:url" content="https://boomber3.github.io/tools/gameMaterials/videoSequence/index.html">
+<meta property="og:site_name" content="BoomberBlog">
+<meta property="og:description" content="视频序列帧截取 - 游戏素材处理              * { box-sizing: border-box; margin: 0; padding: 0; }         body {             margin: 0;             padding: 20px;             background: var(--bg-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boomber3.github.io/img/avatar.png">
+<meta property="article:published_time" content="2026-06-13T02:33:33.338Z">
+<meta property="article:modified_time" content="2026-06-13T02:33:33.296Z">
+<meta property="article:author" content="Boomber3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boomber3.github.io/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://boomber3.github.io/tools/gameMaterials/videoSequence/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4-b1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'BoomberBlog',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(/img/background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fas fa-tools"></i><span> Tools</span></a></div><div class="menus_item"><a class="site-page" href="/play/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">BoomberBlog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fas fa-tools"></i><span> Tools</span></a></div><div class="menus_item"><a class="site-page" href="/play/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title"></h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频序列帧截取 - 游戏素材处理</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color, #f5f5f5);
+            font-family: "微软雅黑", Arial, sans-serif;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg, white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: var(--text-color, #333);
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+        .upload-area {
+            border: 2px dashed var(--border-color, #ddd);
+            border-radius: 12px;
+            padding: 50px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            background: var(--bg-color, #f9f9f9);
+        }
+        .upload-area:hover {
+            border-color: var(--theme-color, #409eff);
+            background: var(--theme-color-lighten, rgba(64, 158, 255, 0.05));
+        }
+        .upload-area.dragover {
+            border-color: var(--theme-color, #409eff);
+            background: var(--theme-color-lighten, rgba(64, 158, 255, 0.1));
+        }
+        .upload-icon { font-size: 56px; margin-bottom: 12px; }
+        .upload-text { color: var(--text-secondary-color, #666); font-size: 16px; margin-bottom: 6px; }
+        .upload-hint { color: var(--text-lighten-color, #999); font-size: 12px; }
+        input[type="file"] { display: none; }
+
+        .video-section { margin-bottom: 24px; }
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        #videoPlayer { width: 100%; max-height: 360px; display: block; }
+        .video-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-color, #f0f0f0);
+            border-radius: 0 0 8px 8px;
+        }
+        .video-controls input[type="range"] { flex: 1; cursor: pointer; }
+        .time-display { font-size: 13px; color: var(--text-color, #333); min-width: 100px; text-align: center; }
+
+        .settings-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: var(--bg-color, #f9f9f9);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+        .setting-item { flex: 1; min-width: 180px; }
+        .setting-label { display: block; font-size: 13px; color: var(--text-secondary-color, #666); margin-bottom: 8px; font-weight: 500; }
+        .setting-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--card-bg, white);
+            color: var(--text-color, #333);
+        }
+        .setting-input:focus { outline: none; border-color: var(--theme-color, #409eff); }
+        .time-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .time-range input { width: 80px; }
+        .time-range span { color: var(--text-secondary-color, #666); }
+
+        .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+        .btn {
+            padding: 12px 28px;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: var(--theme-color, #409eff); color: white; }
+        .btn-primary:hover { background: var(--theme-color-darken, #3077c7); }
+        .btn-secondary { background: var(--bg-color, #e0e0e0); color: var(--text-color, #333); }
+        .btn-secondary:hover { background: #d0d0d0; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* 帧缩略图预览 */
+        .frames-preview { margin-bottom: 24px; }
+        .preview-title {
+            font-size: 14px;
+            color: var(--text-color, #333);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .frames-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scroll-behavior: smooth;
+        }
+        .frames-strip::-webkit-scrollbar { height: 6px; }
+        .frames-strip::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .frame-thumb {
+            flex-shrink: 0;
+            width: 100px;
+            aspect-ratio: 1;
+            border: 2px solid var(--border-color, #ddd);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background: var(--bg-color, #f5f5f5);
+        }
+        .frame-thumb:hover { border-color: var(--theme-color, #409eff); }
+        .frame-thumb.active { border-color: #4CAF50; box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3); }
+        .frame-thumb img { width: 100%; height: 100%; object-fit: contain; }
+        .frame-thumb .thumb-label {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .frame-thumb .thumb-time {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.65);
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* 时间轴 */
+        .timeline-section { margin-bottom: 24px; }
+        .timeline-title {
+            font-size: 14px;
+            color: var(--text-color, #333);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .timeline-container {
+            position: relative;
+            height: 80px;
+            background: var(--bg-color, #f5f5f5);
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        .timeline-ruler {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: var(--bg-color, #e8e8e8);
+            border-bottom: 1px solid var(--border-color, #ddd);
+        }
+        .timeline-ruler-inner {
+            position: relative;
+            height: 100%;
+            padding: 0 10px;
+        }
+        .ruler-mark {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-left: 1px solid #999;
+            font-size: 9px;
+            color: #666;
+            padding-left: 3px;
+            padding-top: 4px;
+        }
+        .timeline-track {
+            position: absolute;
+            top: 30px;
+            left: 10px;
+            right: 10px;
+            height: 44px;
+            background: linear-gradient(to bottom, transparent 50%, rgba(64, 158, 255, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .timeline-range {
+            position: absolute;
+            top: 30px;
+            height: 44px;
+            background: rgba(64, 158, 255, 0.1);
+            border-left: 2px solid var(--theme-color, #409eff);
+            border-right: 2px solid var(--theme-color, #409eff);
+        }
+        .timeline-frame {
+            position: absolute;
+            top: 32px;
+            width: 16px;
+            height: 40px;
+            background: var(--theme-color, #409eff);
+            border-radius: 4px;
+            cursor: grab;
+            transform: translateX(-50%);
+            transition: background 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: white;
+            font-weight: 600;
+            user-select: none;
+        }
+        .timeline-frame:hover {
+            background: var(--theme-color-darken, #3077c7);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .timeline-frame.active {
+            background: #4CAF50;
+        }
+        .timeline-frame.dragging {
+            cursor: grabbing;
+            opacity: 0.8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .timeline-playhead {
+            position: absolute;
+            top: 28px;
+            width: 2px;
+            height: 48px;
+            background: #e74c3c;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .timeline-playhead::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            border: 5px solid transparent;
+            border-top-color: #e74c3c;
+        }
+        .timeline-hint {
+            font-size: 11px;
+            color: var(--text-lighten-color, #999);
+            text-align: center;
+        }
+
+        /* 拖动实时预览 */
+        .drag-preview {
+            position: fixed;
+            background: var(--card-bg, white);
+            border: 2px solid var(--theme-color, #409eff);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            padding: 8px;
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .drag-preview.show {
+            display: block;
+            opacity: 1;
+        }
+        .drag-preview canvas {
+            display: block;
+            max-width: 180px;
+            max-height: 180px;
+            border-radius: 4px;
+        }
+        .drag-preview .drag-preview-info {
+            text-align: center;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-color, #333);
+        }
+
+        /* 动画预览 */
+        .animation-preview {
+            border: 2px solid var(--border-color, #ddd);
+            border-radius: 8px;
+            padding: 20px;
+            background: var(--bg-color, #f9f9f9);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .animation-title { font-size: 14px; color: var(--text-secondary-color, #666); margin-bottom: 12px; }
+        .animation-canvas-wrap {
+            display: inline-block;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #animationCanvas { display: block; max-width: 100%; }
+        .animation-controls { margin-top: 12px; display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .animation-controls button {
+            padding: 6px 16px;
+            font-size: 13px;
+            border: 1px solid var(--border-color, #ddd);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .animation-controls button:hover { border-color: var(--theme-color, #409eff); color: var(--theme-color, #409eff); }
+        .fps-display { font-size: 13px; color: var(--text-secondary-color, #666); }
+
+        .context-menu {
+            position: fixed;
+            background: var(--card-bg, white);
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 140px;
+        }
+        .context-menu.show { display: block; }
+        .context-menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-color, #333);
+            transition: background 0.2s;
+        }
+        .context-menu-item:hover { background: var(--theme-color-lighten, rgba(64, 158, 255, 0.1)); }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #4CAF50;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-text { color: white; font-size: 18px; }
+
+        @media (max-width: 768px) {
+            .frame-thumb { width: 70px; }
+            .timeline-frame { width: 12px; height: 32px; top: 34px; }
+            .timeline-playhead { height: 40px; top: 32px; }
+            .setting-item { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>视频序列帧截取工具</h1>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🎬</div>
+            <div class="upload-text">点击上传视频 / 拖拽视频到此处</div>
+            <div class="upload-hint">支持 MP4 格式 · 或右键粘贴视频文件</div>
+            <input type="file" id="fileInput" accept="video/mp4,video/*">
+        </div>
+
+        <div class="video-section" id="videoSection" style="display: none;">
+            <div class="video-container">
+                <video id="videoPlayer"></video>
+            </div>
+            <div class="video-controls">
+                <input type="range" id="seekBar" min="0" max="100" value="0">
+                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+            </div>
+        </div>
+
+        <div class="settings-panel">
+            <div class="setting-item">
+                <label class="setting-label">目标帧数 (1-30)</label>
+                <input type="number" class="setting-input" id="frameCountInput" value="16" min="1" max="30">
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">时间范围</label>
+                <div class="time-range">
+                    <input type="number" class="setting-input" id="startTimeInput" value="0" min="0" step="0.1">
+                    <span>至</span>
+                    <input type="number" class="setting-input" id="endTimeInput" value="10" min="0" step="0.1">
+                    <span>秒</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="generateBtn" style="flex-shrink: 0;">🎯 生成序列帧</button>
+        </div>
+
+        <!-- 帧缩略图预览 -->
+        <div class="frames-preview" id="framesPreview" style="display: none;">
+            <div class="preview-title">帧缩略图预览 <span id="frameCountLabel" style="font-weight: normal; color: #888;"></span></div>
+            <div class="frames-strip" id="framesStrip"></div>
+        </div>
+
+        <!-- 时间轴 -->
+        <div class="timeline-section" id="timelineSection" style="display: none;">
+            <div class="timeline-title">时间轴调整 <span style="font-weight: normal; color: #888; font-size: 12px;">（拖动帧块调整时间位置）</span></div>
+            <div class="timeline-container" id="timelineContainer">
+                <div class="timeline-ruler">
+                    <div class="timeline-ruler-inner" id="timelineRuler"></div>
+                </div>
+                <div class="timeline-track" id="timelineTrack"></div>
+                <div class="timeline-range" id="timelineRange"></div>
+                <div class="timeline-playhead" id="timelinePlayhead" style="left: 10px;"></div>
+            </div>
+            <div class="timeline-hint">提示：点击时间轴可定位视频，点击帧块可选中并定位</div>
+        </div>
+
+        <!-- 拖动实时预览 -->
+        <div class="drag-preview" id="dragPreview">
+            <canvas id="dragPreviewCanvas"></canvas>
+            <div class="drag-preview-info" id="dragPreviewInfo"></div>
+        </div>
+
+        <!-- 动画预览 -->
+        <div class="animation-preview" id="animationPreview" style="display: none;">
+            <div class="animation-title">动画预览</div>
+            <div class="animation-canvas-wrap">
+                <canvas id="animationCanvas"></canvas>
+            </div>
+            <div class="animation-controls">
+                <button id="playBtn">▶ 播放</button>
+                <button id="pauseBtn">⏸ 暂停</button>
+                <button id="stopBtn">⏹ 停止</button>
+                <span class="fps-display">FPS: <span id="fpsValue">8</span></span>
+            </div>
+        </div>
+
+        <div class="btn-row" id="exportBar" style="display: none;">
+            <button class="btn btn-primary" id="downloadAllBtn">📥 打包下载全部</button>
+            <button class="btn btn-secondary" id="clearBtn">🗑️ 清空重置</button>
+        </div>
+    </div>
+
+    <div class="context-menu" id="contextMenu">
+        <div class="context-menu-item" data-action="save">💾 保存图片</div>
+        <div class="context-menu-item" data-action="copy">📋 复制到剪切板</div>
+    </div>
+
+    <div class="toast" id="toast">操作成功</div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">正在截取序列帧...</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const videoSection = document.getElementById('videoSection');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const seekBar = document.getElementById('seekBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const frameCountInput = document.getElementById('frameCountInput');
+        const startTimeInput = document.getElementById('startTimeInput');
+        const endTimeInput = document.getElementById('endTimeInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const framesPreview = document.getElementById('framesPreview');
+        const framesStrip = document.getElementById('framesStrip');
+        const frameCountLabel = document.getElementById('frameCountLabel');
+        const timelineSection = document.getElementById('timelineSection');
+        const timelineContainer = document.getElementById('timelineContainer');
+        const timelineRuler = document.getElementById('timelineRuler');
+        const timelineTrack = document.getElementById('timelineTrack');
+        const timelineRange = document.getElementById('timelineRange');
+        const timelinePlayhead = document.getElementById('timelinePlayhead');
+        const animationPreview = document.getElementById('animationPreview');
+        const animationCanvas = document.getElementById('animationCanvas');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const fpsValue = document.getElementById('fpsValue');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const contextMenu = document.getElementById('contextMenu');
+        const toast = document.getElementById('toast');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const dragPreview = document.getElementById('dragPreview');
+        const dragPreviewCanvas = document.getElementById('dragPreviewCanvas');
+        const dragPreviewInfo = document.getElementById('dragPreviewInfo');
+
+        let frames = [];
+        let totalDuration = 0;
+        let isPlaying = false;
+        let animationId = null;
+        let currentFrameIndex = 0;
+        let selectedFrameIndex = -1;
+        let isDragging = false;
+        let dragFrameIndex = -1;
+        let dragStartX = 0;
+        let dragStartLeft = 0;
+
+        // 上传
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', e => { if (e.target.files[0]) loadVideo(e.target.files[0]); });
+
+        uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) loadVideo(e.dataTransfer.files[0]);
+        });
+
+        // 右键粘贴
+        document.addEventListener('contextmenu', async e => {
+            if (e.target.closest('.container')) {
+                e.preventDefault();
+                try {
+                    const items = await navigator.clipboard.read();
+                    for (const item of items) {
+                        for (const type of item.types) {
+                            if (type.startsWith('image/') || type.startsWith('video/')) {
+                                const blob = await item.getType(type);
+                                loadVideo(blob);
+                                return;
+                            }
+                        }
+                    }
+                } catch (err) {}
+                showToast('请上传视频文件');
+            }
+        });
+
+        function loadVideo(file) {
+            const url = URL.createObjectURL(file);
+            videoPlayer.src = url;
+            videoSection.style.display = 'block';
+            videoPlayer.onloadedmetadata = () => {
+                totalDuration = videoPlayer.duration;
+                endTimeInput.value = Math.min(totalDuration, 10).toFixed(1);
+                endTimeInput.max = totalDuration;
+                startTimeInput.max = totalDuration;
+                updateTimeDisplay();
+            };
+        }
+
+        // 视频时间更新
+        videoPlayer.addEventListener('timeupdate', () => {
+            seekBar.max = totalDuration;
+            seekBar.value = videoPlayer.currentTime;
+            updateTimeDisplay();
+            updatePlayhead();
+        });
+        seekBar.addEventListener('input', () => { videoPlayer.currentTime = seekBar.value; });
+        videoPlayer.addEventListener('play', () => updateTimeDisplay());
+        videoPlayer.addEventListener('pause', () => updateTimeDisplay());
+
+        function updateTimeDisplay() {
+            const current = formatTime(videoPlayer.currentTime);
+            const total = formatTime(totalDuration);
+            timeDisplay.textContent = `${current} / ${total}`;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // 生成序列帧
+        generateBtn.addEventListener('click', async () => {
+            const frameCount = parseInt(frameCountInput.value) || 16;
+            const startTime = parseFloat(startTimeInput.value) || 0;
+            const endTime = Math.min(parseFloat(endTimeInput.value) || totalDuration, totalDuration);
+
+            if (startTime >= endTime) { showToast('开始时间必须小于结束时间'); return; }
+            if (frameCount < 1 || frameCount > 30) { showToast('帧数必须在 1-30 之间'); return; }
+
+            loadingOverlay.classList.add('show');
+            frames = [];
+
+            const interval = (endTime - startTime) / frameCount;
+
+            for (let i = 0; i < frameCount; i++) {
+                const time = startTime + interval * i;
+                await captureFrame(time, i + 1);
+            }
+
+            renderFrameStrip();
+            renderTimeline();
+            showAnimationSection();
+            loadingOverlay.classList.remove('show');
+            showToast(`已生成 ${frames.length} 帧`);
+        });
+
+        function captureFrame(time, index) {
+            return new Promise(resolve => {
+                const capturedTime = time; // 闭包捕获当前时间值
+                const onSeeked = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = videoPlayer.videoWidth;
+                    canvas.height = videoPlayer.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(videoPlayer, 0, 0);
+
+                    frames.push({
+                        index,
+                        time: capturedTime,
+                        dataUrl: canvas.toDataURL('image/png'),
+                        filename: `frame_${String(index).padStart(3, '0')}.png`
+                    });
+                    videoPlayer.removeEventListener('seeked', onSeeked);
+                    resolve();
+                };
+                videoPlayer.addEventListener('seeked', onSeeked);
+                videoPlayer.currentTime = capturedTime;
+            });
+        }
+
+        // 渲染帧缩略图
+        function renderFrameStrip() {
+            framesStrip.innerHTML = '';
+            frameCountLabel.textContent = `（共 ${frames.length} 帧）`;
+            framesPreview.style.display = 'block';
+
+            frames.forEach((frame, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'frame-thumb';
+                thumb.dataset.index = idx;
+
+                const img = document.createElement('img');
+                img.src = frame.dataUrl;
+                img.draggable = false;
+
+                const label = document.createElement('div');
+                label.className = 'thumb-label';
+                label.textContent = `#${frame.index}`;
+
+                const time = document.createElement('div');
+                time.className = 'thumb-time';
+                time.textContent = `${frame.time.toFixed(2)}s`;
+
+                thumb.appendChild(img);
+                thumb.appendChild(label);
+                thumb.appendChild(time);
+                framesStrip.appendChild(thumb);
+
+                thumb.addEventListener('click', () => {
+                    selectFrame(idx);
+                    videoPlayer.currentTime = frame.time;
+                    videoPlayer.play();
+                });
+            });
+        }
+
+        function selectFrame(idx) {
+            selectedFrameIndex = idx;
+            document.querySelectorAll('.frame-thumb').forEach((t, i) => {
+                t.classList.toggle('active', i === idx);
+            });
+            document.querySelectorAll('.timeline-frame').forEach((f, i) => {
+                f.classList.toggle('active', i === idx);
+            });
+        }
+
+        // 渲染时间轴
+        function renderTimeline() {
+            const startTime = parseFloat(startTimeInput.value) || 0;
+            const endTime = Math.min(parseFloat(endTimeInput.value) || totalDuration, totalDuration);
+
+            // 渲染刻度
+            timelineRuler.innerHTML = '';
+            const duration = endTime - startTime;
+            const trackWidth = timelineContainer.clientWidth - 20;
+            const step = calculateTickStep(duration);
+
+            for (let t = 0; t <= duration; t += step) {
+                const mark = document.createElement('div');
+                mark.className = 'ruler-mark';
+                const percent = ((t / duration) * 100);
+                mark.style.left = percent + '%';
+                mark.textContent = (startTime + t).toFixed(1) + 's';
+                timelineRuler.appendChild(mark);
+            }
+
+            // 渲染范围
+            timelineRange.style.left = '10px';
+            timelineRange.style.width = trackWidth + 'px';
+
+            // 渲染帧块
+            document.querySelectorAll('.timeline-frame').forEach(f => f.remove());
+            frames.forEach((frame, idx) => {
+                const frameEl = document.createElement('div');
+                frameEl.className = 'timeline-frame';
+                frameEl.dataset.index = idx;
+                frameEl.textContent = frame.index;
+
+                const percent = ((frame.time - startTime) / duration) * 100;
+                frameEl.style.left = `calc(10px + ${trackWidth} * ${percent / 100})`;
+
+                frameEl.addEventListener('mousedown', e => startDrag(e, idx));
+                frameEl.addEventListener('click', e => {
+                    if (!isDragging) {
+                        selectFrame(idx);
+                        videoPlayer.currentTime = frame.time;
+                        videoPlayer.play();
+                    }
+                });
+
+                timelineTrack.appendChild(frameEl);
+            });
+
+            // 时间轴点击定位
+            timelineTrack.addEventListener('click', e => {
+                if (e.target.classList.contains('timeline-frame')) return;
+                const rect = timelineTrack.getBoundingClientRect();
+                const percent = (e.clientX - rect.left - 10) / (rect.width - 20);
+                const time = startTime + percent * duration;
+                videoPlayer.currentTime = Math.max(startTime, Math.min(endTime, time));
+            });
+
+            updatePlayhead();
+            timelineSection.style.display = 'block';
+        }
+
+        function calculateTickStep(duration) {
+            const targetMarks = 8;
+            const rawStep = duration / targetMarks;
+            const pow = Math.pow(10, Math.floor(Math.log10(rawStep)));
+            const normalized = rawStep / pow;
+            if (normalized < 2) return pow;
+            if (normalized < 5) return pow * 2;
+            return pow * 5;
+        }
+
+        function updatePlayhead() {
+            const startTime = parseFloat(startTimeInput.value) || 0;
+            const endTime = Math.min(parseFloat(endTimeInput.value) || totalDuration, totalDuration);
+            const duration = endTime - startTime;
+            const trackWidth = timelineContainer.clientWidth - 20;
+
+            if (totalDuration > 0 && duration > 0) {
+                const percent = (videoPlayer.currentTime - startTime) / duration;
+                const clampedPercent = Math.max(0, Math.min(1, percent));
+                timelinePlayhead.style.left = `calc(10px + ${trackWidth} * ${clampedPercent})`;
+            }
+        }
+
+        // 拖动帧块
+        function startDrag(e, idx) {
+            e.preventDefault();
+            isDragging = true;
+            dragFrameIndex = idx;
+            dragStartX = e.clientX;
+
+            const frame = frames[idx];
+            const startTime = parseFloat(startTimeInput.value) || 0;
+            const endTime = Math.min(parseFloat(endTimeInput.value) || totalDuration, totalDuration);
+            const duration = endTime - startTime;
+            const trackWidth = timelineContainer.clientWidth - 20;
+
+            dragStartLeft = ((frame.time - startTime) / duration) * trackWidth;
+
+            const frameEl = document.querySelectorAll('.timeline-frame')[idx];
+            frameEl.classList.add('dragging');
+
+            // 显示拖动预览
+            showDragPreview(frame.time);
+
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', endDrag);
+        }
+
+        function showDragPreview(time) {
+            // 跳到指定时间并捕获帧
+            videoPlayer.currentTime = time;
+            videoPlayer.pause();
+
+            // 等待视频跳转完成后捕获
+            const captureFrame = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoPlayer.videoWidth;
+                canvas.height = videoPlayer.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(videoPlayer, 0, 0);
+
+                // 缩放预览
+                const maxSize = 180;
+                let w = canvas.width, h = canvas.height;
+                if (w > maxSize || h > maxSize) {
+                    const ratio = Math.min(maxSize / w, maxSize / h);
+                    w = Math.floor(w * ratio);
+                    h = Math.floor(h * ratio);
+                }
+
+                dragPreviewCanvas.width = w;
+                dragPreviewCanvas.height = h;
+                const previewCtx = dragPreviewCanvas.getContext('2d');
+                previewCtx.drawImage(canvas, 0, 0, w, h);
+
+                dragPreviewInfo.textContent = `${time.toFixed(3)}s`;
+                dragPreview.classList.add('show');
+            };
+
+            if (Math.abs(videoPlayer.currentTime - time) < 0.01) {
+                captureFrame();
+            } else {
+                videoPlayer.onseeked = captureFrame;
+            }
+        }
+
+        function hideDragPreview() {
+            dragPreview.classList.remove('show');
+        }
+
+        function updateDragPreviewPosition(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+            const previewW = 200;
+            const previewH = 220;
+
+            let left = x + 20;
+            let top = y - previewH / 2;
+
+            // 边界检测
+            if (left + previewW > window.innerWidth) {
+                left = x - previewW - 20;
+            }
+            if (top < 10) top = 10;
+            if (top + previewH > window.innerHeight - 10) {
+                top = window.innerHeight - previewH - 10;
+            }
+
+            dragPreview.style.left = left + 'px';
+            dragPreview.style.top = top + 'px';
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+
+            const startTime = parseFloat(startTimeInput.value) || 0;
+            const endTime = Math.min(parseFloat(endTimeInput.value) || totalDuration, totalDuration);
+            const duration = endTime - startTime;
+            const trackWidth = timelineContainer.clientWidth - 20;
+
+            let newLeft = dragStartLeft + (e.clientX - dragStartX);
+            newLeft = Math.max(0, Math.min(trackWidth, newLeft));
+
+            const frameEl = document.querySelectorAll('.timeline-frame')[dragFrameIndex];
+            frameEl.style.left = `calc(10px + ${newLeft}px)`;
+
+            // 更新帧数据
+            const newTime = startTime + (newLeft / trackWidth) * duration;
+            frames[dragFrameIndex].time = Math.max(startTime, Math.min(endTime, newTime));
+
+            // 更新缩略图时间显示
+            const thumb = document.querySelectorAll('.frame-thumb')[dragFrameIndex];
+            thumb.querySelector('.thumb-time').textContent = `${frames[dragFrameIndex].time.toFixed(2)}s`;
+
+            // 更新预览位置和内容
+            updateDragPreviewPosition(e);
+            showDragPreview(frames[dragFrameIndex].time);
+        }
+
+        function endDrag() {
+            if (isDragging) {
+                const frameEl = document.querySelectorAll('.timeline-frame')[dragFrameIndex];
+                if (frameEl) frameEl.classList.remove('dragging');
+            }
+            isDragging = false;
+            dragFrameIndex = -1;
+            hideDragPreview();
+            videoPlayer.onseeked = null;
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', endDrag);
+        }
+
+        // 动画预览
+        function showAnimationSection() {
+            if (frames.length === 0) return;
+            animationPreview.style.display = 'block';
+            downloadAllBtn.parentElement.style.display = 'flex';
+
+            const firstFrame = new Image();
+            firstFrame.onload = () => {
+                const maxSize = 200;
+                let w = firstFrame.width, h = firstFrame.height;
+                if (w > maxSize || h > maxSize) {
+                    const ratio = Math.min(maxSize / w, maxSize / h);
+                    w *= ratio; h *= ratio;
+                }
+                animationCanvas.width = w;
+                animationCanvas.height = h;
+                animationCanvas.style.width = w + 'px';
+                animationCanvas.style.height = h + 'px';
+                drawAnimationFrame(0);
+            };
+            firstFrame.src = frames[0].dataUrl;
+        }
+
+        function drawAnimationFrame(idx) {
+            if (idx >= frames.length) idx = 0;
+            const ctx = animationCanvas.getContext('2d');
+            const img = new Image();
+            img.onload = () => {
+                ctx.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
+                ctx.drawImage(img, 0, 0, animationCanvas.width, animationCanvas.height);
+            };
+            img.src = frames[idx].dataUrl;
+            return idx;
+        }
+
+        let frameCount = 0;
+        let lastFpsUpdate = 0;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) return;
+            isPlaying = true;
+            frameCount = 0;
+            lastFpsUpdate = Date.now();
+            animateLoop();
+        });
+
+        function animateLoop() {
+            if (!isPlaying) return;
+            currentFrameIndex = drawAnimationFrame(currentFrameIndex);
+            currentFrameIndex++;
+            if (currentFrameIndex >= frames.length) currentFrameIndex = 0;
+
+            frameCount++;
+            const now = Date.now();
+            if (now - lastFpsUpdate >= 1000) {
+                fpsValue.textContent = frameCount;
+                frameCount = 0;
+                lastFpsUpdate = now;
+            }
+
+            animationId = setTimeout(() => requestAnimationFrame(animateLoop), 125);
+        }
+
+        pauseBtn.addEventListener('click', () => { isPlaying = false; });
+        stopBtn.addEventListener('click', () => {
+            isPlaying = false;
+            currentFrameIndex = 0;
+            drawAnimationFrame(0);
+        });
+
+        // 右键菜单
+        let selectedItem = null;
+        framesStrip.addEventListener('contextmenu', e => {
+            const thumb = e.target.closest('.frame-thumb');
+            if (thumb) {
+                e.preventDefault();
+                selectedItem = thumb;
+                contextMenu.style.left = e.clientX + 'px';
+                contextMenu.style.top = e.clientY + 'px';
+                contextMenu.classList.add('show');
+            }
+        });
+        document.addEventListener('click', () => contextMenu.classList.remove('show'));
+
+        contextMenu.addEventListener('click', async e => {
+            const action = e.target.dataset.action;
+            if (!action || !selectedItem) return;
+            const idx = parseInt(selectedItem.dataset.index);
+            const frame = frames[idx];
+
+            if (action === 'save') {
+                const link = document.createElement('a');
+                link.download = frame.filename;
+                link.href = frame.dataUrl;
+                link.click();
+                showToast('图片已保存');
+            } else if (action === 'copy') {
+                await copyImageToClipboard(frame.dataUrl);
+            }
+            contextMenu.classList.remove('show');
+        });
+
+        async function copyImageToClipboard(dataUrl) {
+            try {
+                const resp = await fetch(dataUrl);
+                const blob = await resp.blob();
+                await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+                showToast('已复制到剪切板');
+            } catch (err) { showToast('复制失败'); }
+        }
+
+        // 打包下载
+        downloadAllBtn.addEventListener('click', async () => {
+            if (frames.length === 0) return;
+            loadingOverlay.classList.add('show');
+            loadingOverlay.querySelector('.loading-text').textContent = '正在打包...';
+
+            const zip = new JSZip();
+            frames.forEach(frame => zip.file(frame.filename, frame.dataUrl.split(',')[1], { base64: true }));
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'frames.zip';
+            link.click();
+
+            loadingOverlay.classList.remove('show');
+            loadingOverlay.querySelector('.loading-text').textContent = '正在截取序列帧...';
+            showToast('打包下载完成');
+        });
+
+        // 清空
+        clearBtn.addEventListener('click', () => {
+            frames = [];
+            videoPlayer.src = '';
+            videoSection.style.display = 'none';
+            framesPreview.style.display = 'none';
+            timelineSection.style.display = 'none';
+            animationPreview.style.display = 'none';
+            downloadAllBtn.parentElement.style.display = 'none';
+            framesStrip.innerHTML = '';
+            document.querySelectorAll('.timeline-frame').forEach(f => f.remove());
+            fileInput.value = '';
+            isPlaying = false;
+            currentFrameIndex = 0;
+            selectedFrameIndex = -1;
+        });
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // 窗口调整时重绘时间轴
+        window.addEventListener('resize', () => {
+            if (frames.length > 0) renderTimeline();
+        });
+    </script>
+</body>
+</html></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Boomber3</div><div class="author-info-description">做些学习日记和生活记录</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Boomber3"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Boomber3" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3200529173@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/95936433" target="_blank" title="B站"><i class="fab fa-bilibili" style="color: #fb7299;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/27/hello-world/" title="Hello World"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/07/27/hello-world/" title="Hello World">Hello World</a><time datetime="2026-07-26T19:24:31.102Z" title="发表于 2026-07-27 03:24:31">2026-07-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/29/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/SkyBox%E5%A4%A9%E7%A9%BA%E7%9B%92/" title="SkyBox天空盒"><img src="/img/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SkyBox天空盒"/></a><div class="content"><a class="title" href="/2026/03/29/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/SkyBox%E5%A4%A9%E7%A9%BA%E7%9B%92/" title="SkyBox天空盒">SkyBox天空盒</a><time datetime="2026-03-29T07:54:03.000Z" title="发表于 2026-03-29 15:54:03">2026-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/" title="渲染管线"><img src="/img/default_cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="渲染管线"/></a><div class="content"><a class="title" href="/2026/03/21/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/" title="渲染管线">渲染管线</a><time datetime="2026-03-20T16:59:39.000Z" title="发表于 2026-03-21 00:59:39">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/20/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BB%A5%E7%AE%AD%E4%BA%86%E4%B8%AA%E7%AE%AD%E5%92%8C%E7%BE%8A%E4%BA%86%E4%B8%AA%E7%BE%8A%E4%B8%BA%E4%BE%8B/" title="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例"><img src="/img/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例"/></a><div class="content"><a class="title" href="/2026/03/20/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BB%A5%E7%AE%AD%E4%BA%86%E4%B8%AA%E7%AE%AD%E5%92%8C%E7%BE%8A%E4%BA%86%E4%B8%AA%E7%BE%8A%E4%B8%BA%E4%BE%8B/" title="微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例">微信小游戏设计逻辑分析——以箭了个箭和羊了个羊为例</a><time datetime="2026-03-20T04:25:40.000Z" title="发表于 2026-03-20 12:25:40">2026-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式"><img src="/img/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式"/></a><div class="content"><a class="title" href="/2026/03/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式">设计模式</a><time datetime="2026-03-19T10:36:08.000Z" title="发表于 2026-03-19 18:36:08">2026-03-19</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/"><span class="card-category-list-name">C++</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Vibe-Coding/"><span class="card-category-list-name">Vibe Coding</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">前端工具</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span class="card-category-list-name">微信小程序</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/"><span class="card-category-list-name">微信小程序开发</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C/"><span class="card-category-list-name">云数据库操作</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/"><span class="card-category-list-name">游戏开发</span><span class="card-category-list-count">5</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F/" style="font-size: 1.1em; color: #999">微信小游戏</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 1.23em; color: #999ea6">软件工程</a> <a href="/tags/STT/" style="font-size: 1.1em; color: #999">STT</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 1.1em; color: #999">渲染</a> <a href="/tags/%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" style="font-size: 1.23em; color: #999ea6">基本操作</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" style="font-size: 1.1em; color: #999">图形学</a> <a href="/tags/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4/" style="font-size: 1.1em; color: #999">协同过滤</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%9C%BA%E6%99%AF/" style="font-size: 1.1em; color: #999">游戏场景</a> <a href="/tags/Vibe-Coding/" style="font-size: 1.23em; color: #999ea6">Vibe Coding</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.23em; color: #999ea6">博客搭建</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.23em; color: #999ea6">数据结构</a> <a href="/tags/%E5%BD%95%E9%9F%B3/" style="font-size: 1.1em; color: #999">录音</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%EF%BC%8CAgent/" style="font-size: 1.1em; color: #999">微信小程序，Agent</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.5em; color: #99a9bf">微信小程序</a> <a href="/tags/Hexo/" style="font-size: 1.37em; color: #99a4b2">Hexo</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 1.1em; color: #999">组件</a> <a href="/tags/Unity/" style="font-size: 1.23em; color: #999ea6">Unity</a> <a href="/tags/AI/" style="font-size: 1.37em; color: #99a4b2">AI</a> <a href="/tags/Mermaid/" style="font-size: 1.1em; color: #999">Mermaid</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 1.1em; color: #999">游戏设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.37em; color: #99a4b2">算法</a> <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B/" style="font-size: 1.1em; color: #999">提示词工程</a> <a href="/tags/Markdown/" style="font-size: 1.23em; color: #999ea6">Markdown</a> <a href="/tags/%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">案例分析</a> <a href="/tags/hexo/" style="font-size: 1.1em; color: #999">hexo</a> <a href="/tags/C/" style="font-size: 1.1em; color: #999">C++</a> <a href="/tags/%E4%BA%91%E5%87%BD%E6%95%B0/" style="font-size: 1.1em; color: #999">云函数</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/02/">
+            <span class="card-archive-list-date">
+              二月 2026
+            </span>
+            <span class="card-archive-list-count">18</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/01/">
+            <span class="card-archive-list-date">
+              一月 2026
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">34</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-08-31T18:10:01.814Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Boomber3</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4-b1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4-b1"></script><script src="/js/main.js?v=5.5.4-b1"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script src="/js/banner-shader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

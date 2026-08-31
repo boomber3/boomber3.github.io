@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>在线游戏 - 爆爆伞工作室</title>
+<meta name="description" content="爆爆伞工作室的在线小游戏：浏览器直接玩，无需下载。不要相信任何一个P等原创 H5 游戏。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="在线游戏 - 爆爆伞工作室">
+<meta property="og:description" content="浏览器直接玩的原创 H5 小游戏，无需下载。">
+<style>
+:root {
+  --global-bg: #14151c;
+  --accent: #ff8a5c;
+  --accent-strong: #ff6f3d;
+  --text-main: #f2efe9;
+  --text-sub: #a8a5b0;
+  --card-bg: #1d1f29;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--global-bg);
+  color: var(--text-main);
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ---------- 导航 ---------- */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px min(6vw, 60px);
+  background: rgba(20, 21, 28, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--card-border);
+}
+.logo { font-size: 18px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 9px; }
+.logo .umbrella { font-size: 21px; }
+.nav-links { display: flex; gap: 26px; font-size: 15px; color: var(--text-main); align-items: center; }
+.nav-links a { transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.active { color: var(--accent); font-weight: 600; }
+.nav-links a.taptap-cta {
+  color: var(--text-main);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding: 5px 14px; border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.nav-links a.taptap-cta:hover { border-color: var(--accent); background: rgba(255, 138, 92, 0.1); }
+
+/* ---------- 页头 ---------- */
+.page-head { padding: 84px min(6vw, 60px) 40px; text-align: center; }
+.page-head .kicker {
+  display: inline-block; font-size: 13px; letter-spacing: 4px;
+  color: var(--accent); margin-bottom: 10px; font-weight: 600;
+}
+.page-head h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: 2px; }
+.page-head p { color: var(--text-sub); margin-top: 12px; font-size: 15.5px; }
+
+/* ---------- 游戏橱窗 ---------- */
+.games-wrap { padding: 30px min(6vw, 60px) 90px; }
+.games-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; max-width: 1200px; margin: 0 auto; }
+.game-card {
+  width: calc((100% - 52px) / 3);
+  max-width: 380px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 138, 92, 0.35);
+}
+.game-icon-area {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 115%, rgba(255, 111, 61, 0.22), transparent 65%),
+    linear-gradient(180deg, #1a1c26, #171923);
+  border-bottom: 1px solid var(--card-border);
+}
+.game-icon-area .emoji {
+  font-size: 64px; line-height: 1;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s ease;
+}
+.game-card:hover .emoji { transform: scale(1.12) translateY(-3px); }
+.type-tag {
+  position: absolute; top: 12px; left: 12px;
+  padding: 3px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: rgba(15, 16, 22, 0.78);
+  backdrop-filter: blur(6px);
+  color: #ffb46b;
+  border: 1px solid rgba(255, 170, 90, 0.4);
+}
+.game-info { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.game-info h3 { font-size: 17.5px; font-weight: 700; }
+.game-info .desc { font-size: 13.5px; color: var(--text-sub); line-height: 1.65; }
+.dev-icon { width: 15px; height: 15px; border-radius: 3px; vertical-align: -2px; margin-right: 2px; }
+.game-info .play-hint {
+  margin-top: 8px; font-size: 14px; color: var(--accent);
+  display: inline-flex; align-items: center; gap: 5px; font-weight: 700;
+  opacity: 0.85; transition: opacity 0.2s, gap 0.2s;
+}
+.game-card:hover .play-hint { opacity: 1; gap: 9px; }
+.tri { display: inline-block; width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent currentColor; }
+
+/* ---------- 详细横幅卡 ---------- */
+.game-card.wide { flex-direction: row; width: 100%; max-width: 1000px; }
+.game-card.wide .game-icon-area { width: 54%; flex-shrink: 0; aspect-ratio: auto; min-height: 320px; border-bottom: none; border-right: 1px solid var(--card-border); }
+.game-card.wide .game-icon-area img.cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+.game-card.wide .game-info { flex: 1; padding: 30px 30px; justify-content: center; gap: 10px; }
+.game-card.wide .game-info h3 { font-size: 23px; }
+.game-card.wide .en-title { font-size: 13px; letter-spacing: 1.5px; color: var(--text-sub); text-transform: uppercase; }
+.game-card.wide .desc { font-size: 14.5px; color: #c9c5cf; line-height: 1.8; }
+.game-card.wide .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.game-card.wide .meta-pill {
+  font-size: 12px; padding: 3px 11px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05); color: var(--text-sub);
+  border: 1px solid var(--card-border);
+}
+.game-card.wide .dev-row { margin-top: 6px; font-size: 13.5px; color: var(--text-sub); }
+.game-card.wide .dev-row a { color: var(--accent); border-bottom: 1px dashed rgba(255, 138, 92, 0.4); }
+.game-card.wide .dev-row a:hover { border-bottom-color: var(--accent); }
+.game-card.wide .play-hint { margin-top: 10px; font-size: 15px; }
+@media (max-width: 900px) {
+  .game-card.wide { flex-direction: column; }
+  .game-card.wide .game-icon-area { width: 100%; aspect-ratio: 16 / 9; min-height: 0; border-right: none; border-bottom: 1px solid var(--card-border); }
+}
+
+/* 空位占位卡：提示更多游戏在路上 */
+.game-card.coming {
+  cursor: default; opacity: 0.55;
+  border-style: dashed;
+}
+.game-card.coming:hover { transform: none; box-shadow: none; border-color: var(--card-border); }
+.game-card.coming .game-icon-area .emoji { filter: grayscale(0.4); }
+.coming-tag {
+  position: absolute; top: 12px; left: 12px;
+  padding: 3px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: rgba(15, 16, 22, 0.78);
+  color: var(--text-sub);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 40px min(6vw, 60px);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  color: var(--text-sub); font-size: 14px;
+}
+footer .links { display: flex; gap: 22px; }
+footer .links a:hover { color: var(--accent); }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+@media (max-width: 900px) {
+  .games-grid { gap: 18px; }
+  .game-card { width: calc((100% - 18px) / 2); }
+}
+@media (max-width: 600px) {
+  .nav-links a:not(.taptap-cta) { display: none; }
+  .game-card { width: 100%; max-width: none; }
+  .page-head { padding-top: 56px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/"><span class="umbrella">☂</span>爆爆伞工作室</a>
+  <div class="nav-links">
+    <a href="/">主页</a>
+    <a href="/blog/">博客</a>
+    <a href="/tools/">工具</a>
+    <a href="#top" class="active">在线游戏</a>
+    <a class="taptap-cta" href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap ↗</a>
+  </div>
+</nav>
+
+<header class="page-head" id="top">
+  <span class="kicker">PLAY</span>
+  <h1>在线游戏</h1>
+  <p>浏览器直接玩，无需下载。更多游戏持续上架中。</p>
+</header>
+
+<main class="games-wrap">
+  <div class="games-grid">
+
+    <div class="game-card reveal" onclick="location.href='/play/never-trust-a-fart/'">
+      <div class="game-icon-area">
+        <span class="type-tag">Game Jam 作品</span>
+        <img class="cover" src="/img/games/ntaf_cover.png" alt="不要相信任何一个P 实机画面" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      </div>
+      <div class="game-info">
+        <div class="info-text">
+          <div class="title-row"><h3>不要相信任何一个P</h3></div>
+          <span class="desc">与 <img class="dev-icon" src="/img/maoshijie2001.png" alt="" loading="lazy">maoshijie2001 合作开发的平台跳跃短篇。下班后的生死时速——快跑，快放，别信任何一个屁。</span>
+          <span class="play-hint"><span class="tri"></span>查看详情</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-card coming reveal">
+      <div class="game-icon-area"><span class="coming-tag">敬请期待</span><span class="emoji">🎲</span></div>
+      <div class="game-info">
+        <h3>更多游戏制作中</h3>
+        <span class="desc">下一款在线游戏已经在路上——你猜不到它会是什么。</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div>© 2026 爆爆伞工作室 · Boomber Studio</div>
+  <div class="links">
+    <a href="/">主页</a>
+    <a href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap</a>
+    <a href="https://github.com/Boomber3" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://space.bilibili.com/95936433" target="_blank" rel="noopener">B站</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+  }
+})();
+</script>
+</body>
+</html>

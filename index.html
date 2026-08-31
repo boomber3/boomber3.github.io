@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>爆爆伞工作室 - Boomber Studio</title>
+<meta name="description" content="爆爆伞工作室（Boomber Studio）：独立游戏开发，目标是制作精品游戏维持生活，你猜不到我的下一个游戏会是什么！已上线 7 款游戏，TapTap 最高评分 9.3。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爆爆伞工作室 - Boomber Studio">
+<meta property="og:description" content="独立游戏开发，你猜不到我的下一个游戏会是什么！">
+<style>
+:root {
+  --global-bg: #14151c;          /* 内容区底色：黄昏入夜的深蓝黑，与 hero 渐变衔接 */
+  --accent: #ff8a5c;             /* 晚霞橙 */
+  --accent-strong: #ff6f3d;
+  --text-main: #f2efe9;          /* 暖白 */
+  --text-sub: #a8a5b0;
+  --card-bg: #1d1f29;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--global-bg);
+  color: var(--text-main);
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+
+/* ---------- 导航 ---------- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px min(6vw, 60px);
+  transition: background 0.35s, box-shadow 0.35s, padding 0.35s;
+}
+nav.scrolled {
+  background: rgba(20, 21, 28, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--card-border);
+  padding-top: 12px; padding-bottom: 12px;
+}
+.logo { font-size: 19px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 9px; }
+.logo .umbrella { font-size: 22px; }
+.nav-links { display: flex; gap: 30px; font-size: 15px; color: var(--text-main); }
+.nav-links a { transition: color 0.2s; position: relative; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); }
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.taptap-cta {
+  color: var(--text-main);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding: 5px 14px; border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+  text-shadow: none;
+}
+.nav-links a.taptap-cta:hover { border-color: var(--accent); background: rgba(255, 138, 92, 0.1); }
+
+/* ---------- Hero ---------- */
+#studio-hero {
+  position: relative;
+  height: 100vh; min-height: 560px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  background: #35618c; /* shader 加载前的兜底色 */
+  overflow: hidden;
+}
+.hero-content { position: relative; z-index: 2; padding: 0 24px; }
+.hero-content .studio-en {
+  font-size: 14px; letter-spacing: 6px; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 14px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+.hero-content h1 {
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 900; letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 4px 24px rgba(20, 10, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.hero-content .slogan {
+  margin-top: 18px;
+  font-size: clamp(15px, 2vw, 19px);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  max-width: 560px; margin-left: auto; margin-right: auto;
+}
+.hero-actions { margin-top: 34px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 26px; border-radius: 999px;
+  font-size: 15px; font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--accent); color: #241109; box-shadow: 0 4px 18px rgba(255, 111, 61, 0.35); }
+.btn-primary:hover { background: var(--accent-strong); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 111, 61, 0.45); }
+.btn-ghost { border: 1.5px solid rgba(255, 255, 255, 0.75); color: #fff; background: rgba(0, 0, 0, 0.12); }
+.btn-ghost:hover { border-color: #fff; background: rgba(0, 0, 0, 0.28); transform: translateY(-2px); }
+.scroll-hint {
+  position: absolute; bottom: 178px; left: 50%; transform: translateX(-50%);
+  z-index: 2; color: rgba(255, 255, 255, 0.9); font-size: 13px; letter-spacing: 3px;
+  animation: hintFloat 2.2s ease-in-out infinite;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+@keyframes hintFloat { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+
+/* ---------- 通用区块 ---------- */
+main { position: relative; z-index: 1; }
+section { padding: 90px min(6vw, 60px); }
+.sec-inner { max-width: 1200px; margin: 0 auto; }
+.sec-head { margin-bottom: 46px; }
+.sec-head .kicker {
+  display: inline-block; font-size: 13px; letter-spacing: 4px;
+  color: var(--accent); margin-bottom: 10px; font-weight: 600;
+}
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: 1px; }
+.sec-head p { color: var(--text-sub); margin-top: 10px; font-size: 15.5px; }
+
+/* ---------- 游戏卡片（橱窗式：统一尺寸，逐行居中） ---------- */
+.games-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; }
+.game-card {
+  position: relative;
+  width: calc((100% - 52px) / 3);
+  max-width: 380px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 138, 92, 0.35);
+}
+.game-card .thumb { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #0d0e13; }
+.game-card .thumb img.banner-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  filter: blur(16px) brightness(0.5) saturate(1.15);
+  transform: scale(1.18);
+}
+.game-card .thumb img.banner {
+  position: relative; width: 100%; height: 100%;
+  object-fit: contain;
+  transition: transform 0.45s ease;
+}
+.game-card:hover .thumb img.banner { transform: scale(1.04); }
+.game-info { padding: 16px 16px 18px; display: flex; align-items: center; gap: 14px; }
+.game-info img.appicon {
+  width: 54px; height: 54px; border-radius: 12px;
+  flex-shrink: 0; background: #22242e;
+}
+.info-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.info-text .title-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.info-text .title-row h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rating-badge {
+  position: absolute; top: 12px; right: 12px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 13.5px; font-weight: 800;
+  background: rgba(15, 16, 22, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.rating-badge.high { color: #ffb46b; border-color: rgba(255, 170, 90, 0.5); }
+.heat-badge {
+  position: absolute; top: 12px; left: 12px;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 13px; font-weight: 700;
+  background: rgba(15, 16, 22, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.heat-badge svg { width: 13px; height: 13px; fill: #ff8a3d; }
+.game-info h3 { font-size: 17px; font-weight: 700; }
+.status-tag {
+  font-size: 11.5px; padding: 2px 9px; border-radius: 999px;
+  background: rgba(255, 138, 92, 0.12); color: var(--accent);
+  border: 1px solid rgba(255, 138, 92, 0.3); font-weight: 600; white-space: nowrap;
+}
+.game-info .meta { font-size: 13px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- 合作游戏 ---------- */
+.coop-card {
+  display: flex;
+  max-width: 1000px; margin: 0 auto;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.coop-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 138, 92, 0.35);
+}
+.coop-cover { position: relative; width: 52%; flex-shrink: 0; min-height: 300px; }
+.coop-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.coop-tag {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  padding: 4px 13px; border-radius: 999px;
+  background: rgba(15, 16, 22, 0.78); backdrop-filter: blur(6px);
+  color: #ffb46b; border: 1px solid rgba(255, 170, 90, 0.4);
+}
+.coop-info { flex: 1; padding: 30px 32px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.coop-info h3 { font-size: 23px; font-weight: 800; }
+.coop-en { font-size: 13px; letter-spacing: 1.5px; color: var(--text-sub); text-transform: uppercase; }
+.coop-desc { font-size: 14.5px; color: #c9c5cf; line-height: 1.8; }
+.coop-devs { font-size: 14px; color: var(--text-sub); }
+.coop-devs strong { color: var(--text-main); font-weight: 600; }
+.dev-icon { width: 17px; height: 17px; border-radius: 3px; vertical-align: -3px; margin-right: 3px; }
+.coop-more { margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--accent); transition: gap 0.2s; display: inline-flex; gap: 6px; }
+.coop-card:hover .coop-more { gap: 10px; }
+@media (max-width: 900px) {
+  .coop-card { flex-direction: column; }
+  .coop-cover { width: 100%; aspect-ratio: 16 / 9; min-height: 0; }
+}
+
+/* ---------- 关于 ---------- */
+#about { background: #101117; }
+.about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; }
+.about-text p { color: var(--text-sub); margin-bottom: 16px; font-size: 15.5px; }
+.about-text p strong { color: var(--text-main); }
+.social-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.social-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 20px; border-radius: 999px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  font-size: 14.5px; font-weight: 600; color: var(--text-main);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.social-btn:hover { border-color: var(--accent); background: rgba(255, 138, 92, 0.1); transform: translateY(-2px); }
+.social-btn svg { width: 17px; height: 17px; fill: currentColor; flex-shrink: 0; }
+.about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.stat-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 24px 10px; text-align: center;
+}
+.stat-card .num { font-size: 32px; font-weight: 900; color: var(--accent); }
+.stat-card .label { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+
+/* ---------- Devlog ---------- */
+.devlog-list { display: flex; flex-direction: column; gap: 14px; }
+.devlog-item {
+  display: flex; align-items: baseline; gap: 18px;
+  padding: 18px 22px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 12px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.devlog-item:hover { border-color: rgba(255, 138, 92, 0.4); transform: translateX(4px); }
+.devlog-item time { font-size: 13px; color: var(--text-sub); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.devlog-item .t { font-size: 16px; font-weight: 600; }
+.devlog-more { margin-top: 26px; }
+.devlog-loading { color: var(--text-sub); font-size: 14.5px; padding: 12px 4px; }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 44px min(6vw, 60px) 28px;
+  display: flex; flex-direction: column; gap: 16px;
+  color: var(--text-sub); font-size: 14px;
+}
+.foot-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; }
+footer .links { display: flex; gap: 22px; }
+footer .links a:hover { color: var(--accent); }
+.shader-credit {
+  font-size: 12.5px; color: #6f6d78;
+  border-top: 1px solid var(--card-border); padding-top: 16px;
+}
+.shader-credit a { color: #8f8d99; }
+.shader-credit a:hover { color: var(--accent); }
+
+/* ---------- 滚动淡入 ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .scroll-hint { animation: none; }
+}
+
+/* ---------- 移动端 ---------- */
+@media (max-width: 900px) {
+  .games-grid { gap: 18px; }
+  .game-card { width: calc((100% - 18px) / 2); }
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 600px) {
+  .nav-links a:not(.taptap-cta) { display: none; }
+  .game-card { width: 100%; max-width: none; }
+  section { padding-top: 66px; padding-bottom: 66px; }
+  .scroll-hint { bottom: 150px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <a class="logo" href="/"><span class="umbrella">☂</span>爆爆伞工作室</a>
+  <div class="nav-links">
+    <a href="#games">游戏</a>
+    <a href="#blog">Blog</a>
+    <a href="/tools/">工具</a>
+    <a href="/play/">试玩</a>
+    <a href="#about">关于</a>
+    <a class="taptap-cta" href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap ↗</a>
+  </div>
+</nav>
+
+<header id="studio-hero">
+  <div class="hero-content">
+    <div class="studio-en">Boomber Studio</div>
+    <h1>爆爆伞工作室</h1>
+    <p class="slogan">不是只有伟大的开发者才能做出好游戏！</p>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#games">看看我的游戏 ↓</a>
+    <a class="btn btn-ghost" href="https://www.taptap.cn/user/18919160/works" target="_blank" rel="noopener">TapTap 主页</a>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<main>
+  <!-- 关于 -->
+  <section id="about">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">ABOUT</span>
+        <h2>关于工作室</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p><strong>爆爆伞工作室（Boomber Studio）</strong>是一个独立游戏开发厂牌，目前所有作品都在 TapTap 平台发布。</p>
+          <p>我相信小体量也能带来大快乐：每一款游戏都从一个"好玩吗？"的问题开始，快速做出来、快速试、快速改。<s>你永远猜不到下一款会是什么类型。</s>说实话，我自己也不知道。</p>
+          <p>如果你喜欢我的游戏，欢迎来 <a href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener" style="color: var(--accent);">TapTap 关注我</a>，开发进展和新作消息都会第一时间在那里发布。</p>
+          <div class="social-row">
+            <a class="social-btn" href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.9 2.31 7.26 5.63 8.82.61.29 1.09-.13 1.09-.72v-2.02c-2.25.49-2.72-1.08-2.72-1.08-.37-.93-.9-1.18-.9-1.18-.73-.5.06-.49.06-.49.81.06 1.24.83 1.24.83.72 1.23 1.89.87 2.35.67.07-.52.28-.88.51-1.08-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+              TapTap
+            </a>
+            <a class="social-btn" href="https://github.com/Boomber3" target="_blank" rel="noopener">
+              <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+            <a class="social-btn" href="https://space.bilibili.com/95936433" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M7.17 3.3a1 1 0 0 1 1.4.2L10.2 5.5h3.6l1.63-2a1 1 0 1 1 1.56 1.26l-.59.74H18a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3h1.6l-.59-.74a1 1 0 0 1 .16-1.46zM6 7.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H6zm3 3.5a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V12a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V12a1 1 0 0 1 1-1z"/></svg>
+              B站
+            </a>
+          </div>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-card"><div class="num">7</div><div class="label">已上线游戏</div></div>
+          <div class="stat-card"><div class="num">9.3</div><div class="label">TapTap 最高评分</div></div>
+          <div class="stat-card"><div class="num">4+</div><div class="label">9 分以上作品</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 游戏展示 -->
+  <section id="games">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">GAMES</span>
+        <h2>我的游戏</h2>
+        <p>已上线 7 款 · 全部可在 TapTap 免费试玩</p>
+      </div>
+      <div class="games-grid">
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/864680" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="20197 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>2万</span>
+            <img class="banner-bg" src="/img/games/baopo_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/baopo_cover.jpg" alt="爆破大亨宣传图" loading="lazy">
+            <span class="rating-badge">8.7</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/baopo-daheng_icon.jpg" alt="爆破大亨图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>爆破大亨</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">休闲 · 2025.05 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/874104" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="16834 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>1.7万</span>
+            <img class="banner-bg" src="/img/games/gaozi_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/gaozi_cover.jpg" alt="丢个镐子宣传图" loading="lazy">
+            <span class="rating-badge">7.8</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/diu-ge-gaozi_icon.jpg" alt="丢个镐子图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>丢个镐子</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">休闲 · 2025.06 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/856280" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="8008 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>8008</span>
+            <img class="banner-bg" src="/img/games/kuanggong_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/kuanggong_cover.jpg" alt="深渊矿工宣传图" loading="lazy">
+            <span class="rating-badge">7.5</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/shenyuan-kuanggong_icon.jpg" alt="深渊矿工图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>深渊矿工</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">休闲 · 2025.05 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/854693" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="4324 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>4324</span>
+            <img class="banner-bg" src="/img/games/lingsi_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/lingsi_cover.jpg" alt="另存为：宣传图" loading="lazy">
+            <span class="rating-badge high">9.1</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/lingsi-wei_icon.jpg" alt="另存为：图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>另存为：</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">解谜 · 益智 · 平台 · 2025.05 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/889037" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="3194 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>3194</span>
+            <img class="banner-bg" src="/img/games/wenzhu_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/wenzhu_cover.jpg" alt="稳住别倒！宣传图" loading="lazy">
+            <span class="rating-badge high">9.3</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/wenzhu-biedao_icon.jpg" alt="稳住别倒！图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>稳住别倒！</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">知识问答 · 2025.07 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/897896" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="2676 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>2676</span>
+            <img class="banner-bg" src="/img/games/yuzhong_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/yuzhong_cover.jpg" alt="我是鱼中之王宣传图" loading="lazy">
+            <span class="rating-badge high">9.0</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/yuzhong-zhiwang_icon.jpg" alt="我是鱼中之王图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>我是鱼中之王</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">休闲 · 放置 · 像素 · 2025.08 上线</span>
+            </div>
+          </div>
+        </a>
+
+<a class="game-card reveal" href="https://www.taptap.cn/app/886849" target="_blank" rel="noopener">
+          <div class="thumb">
+            <span class="heat-badge" title="2085 人在关注"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>2085</span>
+            <img class="banner-bg" src="/img/games/tiaosheng_cover.jpg" alt="" aria-hidden="true" loading="lazy">
+            <img class="banner" src="/img/games/tiaosheng_cover.jpg" alt="抽象跳绳宣传图" loading="lazy">
+            <span class="rating-badge high">9.2</span>
+          </div>
+          <div class="game-info">
+            <img class="appicon" src="/img/games/chouxiang-tiaosheng_icon.jpg" alt="抽象跳绳图标" loading="lazy">
+            <div class="info-text">
+              <div class="title-row"><h3>抽象跳绳</h3><span class="status-tag">测试版</span></div>
+              <span class="meta">休闲 · 2025.07 上线</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div></section>
+
+  <!-- 合作游戏 -->
+  <section id="coop">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">CO-OP</span>
+        <h2>合作游戏</h2>
+        <p>与伙伴开发者一起创作的作品</p>
+      </div>
+      <div class="coop-card reveal" onclick="location.href='/play/never-trust-a-fart/'" role="link" tabindex="0" aria-label="查看游戏详情：不要相信任何一个P">
+        <div class="coop-cover">
+          <span class="coop-tag">GAME JAM 作品</span>
+          <img src="/img/games/ntaf_cover.png" alt="不要相信任何一个P 实机画面" loading="lazy">
+        </div>
+        <div class="coop-info">
+          <h3>不要相信任何一个P</h3>
+          <span class="coop-en">Never Trust a Fart · Brackeys Game Jam 2026.2</span>
+          <span class="coop-desc">你是一名普通的银行职员，下班后突然肚子剧痛，唯一的目标是在彻底失控前赶回家。用「屁」作为额外推进力可以跑得更快——但每放一次屁，灾难性事故的风险就高一分。</span>
+          <span class="coop-devs"><strong>☂ 爆爆伞工作室</strong> × <strong><img class="dev-icon" src="/img/maoshijie2001.png" alt="" loading="lazy">maoshijie2001</strong> 联合开发</span>
+          <span class="coop-more">查看游戏详情 →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 开发日志 -->
+  <section id="blog">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">BLOG</span>
+        <h2>博客</h2>
+        <p>技术笔记、设计思考与游戏开发日常</p>
+      </div>
+      <div class="devlog-list" id="devlog-list">
+        <div class="devlog-loading">正在加载最新日志…</div>
+      </div>
+      <div class="devlog-more reveal">
+        <a class="btn btn-ghost" href="/blog/">查看全部文章 →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-row">
+    <div>© 2026 爆爆伞工作室 · Boomber Studio</div>
+    <div class="links">
+      <a href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap</a>
+      <a href="https://github.com/Boomber3" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://space.bilibili.com/95936433" target="_blank" rel="noopener">B站</a>
+      <a href="/blog/">Blog</a>
+      <a href="/archives/">Archives</a>
+    </div>
+  </div>
+  <div class="shader-credit">首页横幅动画基于 Shadertoy 作品 <a href="https://www.shadertoy.com/view/Ndc3zl" target="_blank" rel="noopener">"up in the cloud sea"</a> by <a href="https://www.shadertoy.com/user/mdb" target="_blank" rel="noopener">mdb</a> 移植 · CC BY-NC-SA 3.0</div>
+</footer>
+
+<script src="/js/banner-shader.js"></script>
+<script>
+(function () {
+  'use strict';
+  // 导航滚动状态
+  var nav = document.getElementById('topnav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 40); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 滚动淡入
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  // Devlog 精选：从 /devlog/ 文章列表页提取最新 3 篇（同源静态页，构建后自动更新）
+  fetch('/blog/', { credentials: 'same-origin' })
+    .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var items = doc.querySelectorAll('.recent-post-item');
+      var host = document.getElementById('devlog-list');
+      if (!items.length) { host.innerHTML = ''; return; }
+      host.innerHTML = '';
+      var count = 0;
+      for (var i = 0; i < items.length && count < 3; i++) {
+        var it = items[i];
+        var a = it.querySelector('a[href], .article-title a');
+        if (!a) continue;
+        var title = (a.getAttribute('title') || a.textContent || '').trim();
+        var time = it.querySelector('time');
+        var dateStr = time ? (time.getAttribute('datetime') || time.textContent).trim().slice(0, 10) : '';
+        var row = document.createElement('a');
+        row.className = 'devlog-item';
+        row.href = a.getAttribute('href');
+        var t = document.createElement('time');
+        t.textContent = dateStr;
+        var span = document.createElement('span');
+        span.className = 't';
+        span.textContent = title;
+        row.appendChild(t);
+        row.appendChild(span);
+        host.appendChild(row);
+        count++;
+      }
+    })
+    .catch(function () {
+      var host = document.getElementById('devlog-list');
+      if (host) host.innerHTML = '';
+    });
+})();
+</script>
+</body>
+</html>

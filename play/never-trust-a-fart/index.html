@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>不要相信任何一个P · Never Trust a Fart - 爆爆伞工作室</title>
+<meta name="description" content="不要相信任何一个P（Never Trust a Fart）：Brackeys Game Jam 2026.2 参赛作品。你是一名普通的银行职员，下班后突然肚子剧痛，唯一的目标是在彻底失控前赶回家。由爆爆伞工作室与 maoshijie2001 合作开发。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="不要相信任何一个P · Never Trust a Fart">
+<meta property="og:description" content="快跑。快放。别信任何一个屁。Brackeys Game Jam 2026.2 参赛作品。">
+<meta property="og:image" content="/img/games/ntaf_cover.png">
+<style>
+:root {
+  --global-bg: #14151c;
+  --accent: #ff8a5c;
+  --accent-strong: #ff6f3d;
+  --text-main: #f2efe9;
+  --text-sub: #a8a5b0;
+  --card-bg: #1d1f29;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--global-bg);
+  color: var(--text-main);
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+
+/* ---------- 导航 ---------- */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px min(6vw, 60px);
+  background: rgba(20, 21, 28, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--card-border);
+}
+.logo { font-size: 18px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 9px; }
+.logo .umbrella { font-size: 21px; }
+.co-dev { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--text-main); font-weight: 800; letter-spacing: 1px; }
+.co-dev .x { color: var(--accent); font-weight: 800; }
+.co-dev a { display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; }
+.co-dev a:hover { color: var(--accent); }
+.co-dev .cat-avatar { width: 21px; height: 21px; border-radius: 3px; }
+.brand-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .brand-group { gap: 6px; }
+  .co-dev { font-size: 15px; letter-spacing: 0.5px; }
+  .co-dev .cat-avatar { width: 18px; height: 18px; }
+}
+.nav-links { display: flex; gap: 26px; font-size: 15px; color: var(--text-main); align-items: center; }
+.nav-links a { transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.taptap-cta {
+  color: var(--text-main);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding: 5px 14px; border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.nav-links a.taptap-cta:hover { border-color: var(--accent); background: rgba(255, 138, 92, 0.1); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+.hero .bg {
+  position: absolute; inset: 0;
+  background: url('/img/games/ntaf_cover.png') center 30% / cover no-repeat;
+  filter: saturate(1.05);
+  transform: scale(1.04);
+}
+.hero .shade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(20, 21, 28, 0.55) 0%, rgba(20, 21, 28, 0.15) 40%, var(--global-bg) 96%);
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  width: 100%;
+  max-width: 1200px; margin: 0 auto;
+  padding: 140px min(6vw, 60px) 64px;
+}
+.hero .jam-badge {
+  display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 2px;
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(255, 111, 61, 0.16); color: var(--accent);
+  border: 1px solid rgba(255, 138, 92, 0.4);
+  margin-bottom: 16px;
+}
+.hero h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 900; letter-spacing: 2px; text-shadow: 0 4px 22px rgba(0, 0, 0, 0.55); }
+.hero .en { font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); margin-top: 8px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
+.hero .tagline { font-size: clamp(16px, 2.2vw, 20px); color: #ffe9dd; margin-top: 14px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
+.hero-actions { margin-top: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 30px; border-radius: 999px;
+  font-size: 16px; font-weight: 700;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.tri { display: inline-block; width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent currentColor; }
+.btn-play { background: var(--accent); color: #241109; box-shadow: 0 6px 24px rgba(255, 111, 61, 0.4); }
+.btn-play:hover { background: var(--accent-strong); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 111, 61, 0.5); }
+.btn-ghost { border: 1.5px solid rgba(255, 255, 255, 0.7); color: #fff; background: rgba(0, 0, 0, 0.22); font-size: 15px; font-weight: 600; }
+.btn-ghost:hover { border-color: #fff; background: rgba(0, 0, 0, 0.38); transform: translateY(-2px); }
+.hero-meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+.meta-pill {
+  font-size: 12.5px; padding: 4px 13px; border-radius: 999px;
+  background: rgba(15, 16, 22, 0.6);
+  backdrop-filter: blur(6px);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* ---------- 通用区块 ---------- */
+section { padding: 76px min(6vw, 60px); }
+.sec-inner { max-width: 1100px; margin: 0 auto; }
+.sec-head { margin-bottom: 38px; }
+.sec-head .kicker {
+  display: inline-block; font-size: 13px; letter-spacing: 4px;
+  color: var(--accent); margin-bottom: 10px; font-weight: 600;
+}
+.sec-head h2 { font-size: clamp(24px, 3.6vw, 32px); font-weight: 800; letter-spacing: 1px; }
+
+/* ---------- 介绍 ---------- */
+.intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.intro-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 28px 30px;
+}
+.intro-card h3 { font-size: 18px; margin-bottom: 12px; color: var(--accent); }
+.intro-card p { color: #c9c5cf; font-size: 15px; line-height: 1.9; }
+
+/* ---------- 截图 ---------- */
+.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.shot {
+  border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--card-border);
+  aspect-ratio: 1313 / 1280;
+  background: #0d0e13;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.shot:hover { transform: translateY(-5px); box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45); border-color: rgba(255, 138, 92, 0.35); }
+.shot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- 团队 ---------- */
+#about-game { background: #101117; }
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.member {
+  display: flex; align-items: center; gap: 18px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 24px 26px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.member:hover { border-color: rgba(255, 138, 92, 0.35); transform: translateY(-3px); }
+.avatar {
+  width: 58px; height: 58px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  background: linear-gradient(135deg, #2a2d3a, #1d1f29);
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.member .who h3 { font-size: 17px; font-weight: 700; }
+.member .who p { font-size: 13.5px; color: var(--text-sub); margin-top: 3px; }
+.member .who a { color: var(--accent); font-size: 13.5px; }
+.member .who a:hover { text-decoration: underline; }
+.itch-note {
+  margin-top: 26px; text-align: center; color: var(--text-sub); font-size: 14.5px;
+}
+.itch-note a { color: var(--accent); border-bottom: 1px dashed rgba(255, 138, 92, 0.4); }
+.itch-note a:hover { border-bottom-color: var(--accent); }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 40px min(6vw, 60px);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  color: var(--text-sub); font-size: 14px;
+}
+footer .links { display: flex; gap: 22px; }
+footer .links a:hover { color: var(--accent); }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+@media (max-width: 900px) {
+  .intro-grid, .team-grid { grid-template-columns: 1fr; }
+  .shots { grid-template-columns: 1fr 1fr; }
+  .hero { min-height: 66vh; }
+}
+@media (max-width: 600px) {
+  .nav-links a:not(.taptap-cta) { display: none; }
+  .shots { grid-template-columns: 1fr; }
+  section { padding-top: 56px; padding-bottom: 56px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand-group">
+    <a class="logo" href="/"><span class="umbrella">☂</span>爆爆伞工作室</a>
+    <span class="co-dev"><span class="x">×</span><a href="https://maoshijie2001.itch.io/" target="_blank" rel="noopener"><img class="cat-avatar" src="/img/maoshijie2001.png" alt="maoshijie2001 的猫图标">maoshijie2001</a></span>
+  </div>
+  <div class="nav-links">
+    <a href="/">主页</a>
+    <a href="/play/">在线游戏</a>
+    <a href="/tools/">工具</a>
+    <a class="taptap-cta" href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap ↗</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bg"></div>
+  <div class="shade"></div>
+  <div class="hero-inner">
+    <span class="jam-badge">Brackeys Game Jam 2026.2 参赛作品</span>
+    <h1>不要相信任何一个P</h1>
+    <div class="en">Never Trust a Fart</div>
+    <p class="tagline">快跑。快放。别信任何一个屁。</p>
+    <div class="hero-actions">
+      <a class="btn btn-play" href="/tools/gameCenter/xiaban/" target="_blank" rel="noopener"><span class="tri"></span>立即游玩</a>
+      <a class="btn btn-ghost" href="https://maoshijie2001.itch.io/never-trust-a-fart" target="_blank" rel="noopener">itch.io 页面 ↗</a>
+    </div>
+    <div class="hero-meta">
+      <span class="meta-pill">平台跳跃</span>
+      <span class="meta-pill">2D 像素</span>
+      <span class="meta-pill">单人</span>
+      <span class="meta-pill">短篇</span>
+      <span class="meta-pill">免费</span>
+      <span class="meta-pill">HTML5 · 浏览器直接玩</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="intro">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">ABOUT</span>
+        <h2>游戏介绍</h2>
+      </div>
+      <div class="intro-grid">
+        <div class="intro-card reveal">
+          <h3>故事</h3>
+          <p>你是一名普通的银行职员，下班后突然肚子剧痛。唯一的目标：在彻底失控前赶回家。穿越城市一路狂奔，与时间赛跑——留给你的时间不多了。</p>
+        </div>
+        <div class="intro-card reveal">
+          <h3>玩法</h3>
+          <p>用「屁」作为额外推进力可以跑得更快、跳得更远——但每放一次屁，灾难性事故的风险就高一分。越是依赖放屁加速，就越接近灾难。是稳扎稳打，还是赌上一切？由你决定。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">SCREENSHOTS</span>
+        <h2>游戏截图</h2>
+      </div>
+      <div class="shots">
+        <div class="shot reveal"><img src="/img/games/ntaf_shot1.png" alt="游戏截图 1" loading="lazy"></div>
+        <div class="shot reveal"><img src="/img/games/ntaf_shot2.png" alt="游戏截图 2" loading="lazy"></div>
+        <div class="shot reveal"><img src="/img/games/ntaf_shot3.png" alt="游戏截图 3" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-game">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="kicker">TEAM</span>
+        <h2>开发团队</h2>
+      </div>
+      <div class="team-grid">
+        <div class="member reveal">
+          <div class="avatar">☂</div>
+          <div class="who">
+            <h3>爆爆伞工作室</h3>
+            <p>联合开发者 · Boomber Studio</p>
+            <a href="/" >了解工作室 →</a>
+          </div>
+        </div>
+        <div class="member reveal">
+          <div class="avatar"><img src="/img/maoshijie2001.png" alt="maoshijie2001 的猫图标"></div>
+          <div class="who">
+            <h3>maoshijie2001</h3>
+            <p>联合开发者 · itch.io</p>
+            <a href="https://maoshijie2001.itch.io/" target="_blank" rel="noopener">itch.io 主页 ↗</a>
+          </div>
+        </div>
+      </div>
+      <p class="itch-note reveal">本作同时在 itch.io 发布 —— <a href="https://maoshijie2001.itch.io/never-trust-a-fart" target="_blank" rel="noopener">前往 itch.io 游戏页</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© 2026 爆爆伞工作室 · Boomber Studio</div>
+  <div class="links">
+    <a href="/">主页</a>
+    <a href="/play/">在线游戏</a>
+    <a href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap</a>
+    <a href="https://github.com/Boomber3" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://space.bilibili.com/95936433" target="_blank" rel="noopener">B站</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+  }
+})();
+</script>
+</body>
+</html>

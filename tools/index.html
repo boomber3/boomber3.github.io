@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>在线工具 - 爆爆伞工作室</title>
+<meta name="description" content="爆爆伞工作室的在线工具箱：绿幕抠图、像素画还原、图片裁切、序列帧截取、MBTI卡面生成等免费小工具。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="在线工具 - 爆爆伞工作室">
+<meta property="og:description" content="做游戏和内容时顺手造的小工具，全部免费使用。">
+<style>
+:root {
+  --global-bg: #14151c;
+  --accent: #ff8a5c;
+  --accent-strong: #ff6f3d;
+  --text-main: #f2efe9;
+  --text-sub: #a8a5b0;
+  --card-bg: #1d1f29;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--global-bg);
+  color: var(--text-main);
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ---------- 导航 ---------- */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px min(6vw, 60px);
+  background: rgba(20, 21, 28, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--card-border);
+}
+.logo { font-size: 18px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 9px; }
+.logo .umbrella { font-size: 21px; }
+.nav-links { display: flex; gap: 26px; font-size: 15px; color: var(--text-main); align-items: center; }
+.nav-links a { transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.taptap-cta {
+  color: var(--text-main);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding: 5px 14px; border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.nav-links a.taptap-cta:hover { border-color: var(--accent); background: rgba(255, 138, 92, 0.1); }
+
+/* ---------- 页头 ---------- */
+.page-head {
+  padding: 84px min(6vw, 60px) 40px;
+  text-align: center;
+}
+.page-head .kicker {
+  display: inline-block; font-size: 13px; letter-spacing: 4px;
+  color: var(--accent); margin-bottom: 10px; font-weight: 600;
+}
+.page-head h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: 2px; }
+.page-head p { color: var(--text-sub); margin-top: 12px; font-size: 15.5px; }
+
+/* ---------- 工具橱窗 ---------- */
+.tools-wrap { padding: 30px min(6vw, 60px) 90px; }
+.tools-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; max-width: 1200px; margin: 0 auto; }
+.tool-card {
+  width: calc((100% - 52px) / 3);
+  max-width: 380px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tool-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 138, 92, 0.35);
+}
+.tool-icon-area {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 115%, rgba(255, 111, 61, 0.22), transparent 65%),
+    linear-gradient(180deg, #1a1c26, #171923);
+  border-bottom: 1px solid var(--card-border);
+}
+.tool-icon-area .emoji {
+  font-size: 58px; line-height: 1;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s ease;
+}
+.tool-card:hover .emoji { transform: scale(1.12) translateY(-3px); }
+.cat-tag {
+  position: absolute; top: 12px; left: 12px;
+  padding: 3px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: rgba(15, 16, 22, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--text-sub);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cat-tag.img { color: #7fc7ff; border-color: rgba(127, 199, 255, 0.35); }
+.cat-tag.dev { color: #ffb46b; border-color: rgba(255, 170, 90, 0.4); }
+.cat-tag.fun { color: #9be8a9; border-color: rgba(155, 232, 169, 0.35); }
+.tool-info { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.tool-info h3 { font-size: 17.5px; font-weight: 700; }
+.tool-info .desc { font-size: 13.5px; color: var(--text-sub); line-height: 1.65; }
+.tool-info .open-hint {
+  margin-top: 8px; font-size: 13px; color: var(--accent);
+  display: inline-flex; align-items: center; gap: 5px; font-weight: 600;
+  opacity: 0.85; transition: opacity 0.2s, gap 0.2s;
+}
+.tool-card:hover .open-hint { opacity: 1; gap: 9px; }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 40px min(6vw, 60px);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  color: var(--text-sub); font-size: 14px;
+}
+footer .links { display: flex; gap: 22px; }
+footer .links a:hover { color: var(--accent); }
+
+/* ---------- 滚动淡入 ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+@media (max-width: 900px) {
+  .tools-grid { gap: 18px; }
+  .tool-card { width: calc((100% - 18px) / 2); }
+}
+@media (max-width: 600px) {
+  .nav-links a:not(.taptap-cta) { display: none; }
+  .tool-card { width: 100%; max-width: none; }
+  .page-head { padding-top: 56px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/"><span class="umbrella">☂</span>爆爆伞工作室</a>
+  <div class="nav-links">
+    <a href="/">主页</a>
+    <a href="/blog/">博客</a>
+    <a href="#top">工具</a>
+    <a href="/play/">在线游戏</a>
+    <a class="taptap-cta" href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap ↗</a>
+  </div>
+</nav>
+
+<header class="page-head" id="top">
+  <span class="kicker">TOOLS</span>
+  <h1>在线工具</h1>
+  <p>做游戏和内容时顺手造的小工具，全部免费使用，打开即用。</p>
+</header>
+
+<main class="tools-wrap">
+  <div class="tools-grid">
+
+    <a class="tool-card reveal" href="/tools/greenScreen/index.html">
+      <div class="tool-icon-area"><span class="cat-tag img">图像</span><span class="emoji">🎨</span></div>
+      <div class="tool-info">
+        <h3>绿幕抠图</h3>
+        <span class="desc">扣掉图片绿幕背景，一键生成透明 PNG 图片。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/perfectPixel/index.html">
+      <div class="tool-icon-area"><span class="cat-tag img">图像</span><span class="emoji">🖼️</span></div>
+      <div class="tool-info">
+        <h3>Perfect Pixel</h3>
+        <span class="desc">从模糊像素画还原清晰像素画，自动检测像素网格。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/gameMaterials/imageCropper/index.html">
+      <div class="tool-icon-area"><span class="cat-tag dev">游戏开发</span><span class="emoji">✂️</span></div>
+      <div class="tool-info">
+        <h3>图片裁切工具</h3>
+        <span class="desc">4×4 / 3×3 网格切图，支持粘贴上传和批量导出。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/gameMaterials/videoSequence/index.html">
+      <div class="tool-icon-area"><span class="cat-tag dev">游戏开发</span><span class="emoji">🎬</span></div>
+      <div class="tool-info">
+        <h3>视频序列帧截取</h3>
+        <span class="desc">从视频中截取序列帧，支持动画预览和打包下载。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/fileHandle/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86.html">
+      <div class="tool-icon-area"><span class="cat-tag img">图像</span><span class="emoji">📃</span></div>
+      <div class="tool-info">
+        <h3>文件处理工具</h3>
+        <span class="desc">图片批量压缩、格式转换（PDF / Word / JPG / PNG）。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/mbtiCard/index.html">
+      <div class="tool-icon-area"><span class="cat-tag fun">趣味</span><span class="emoji">✨</span></div>
+      <div class="tool-info">
+        <h3>MBTI 卡面生成器</h3>
+        <span class="desc">自定义 MBTI 风格卡面，更换字体颜色，上传角色图片。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/volleyball/index.html">
+      <div class="tool-icon-area"><span class="cat-tag fun">趣味</span><span class="emoji">🏟️</span></div>
+      <div class="tool-info">
+        <h3>排球站位模拟</h3>
+        <span class="desc">排球轮次站位演示与防守模拟，支持拖拽调整位置。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+    <a class="tool-card reveal" href="/tools/live/stopwatch.html">
+      <div class="tool-icon-area"><span class="cat-tag fun">趣味</span><span class="emoji">📺</span></div>
+      <div class="tool-info">
+        <h3>直播正计时</h3>
+        <span class="desc">直播专用的自动计时工具。</span>
+        <span class="open-hint">打开工具 →</span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div>© 2026 爆爆伞工作室 · Boomber Studio</div>
+  <div class="links">
+    <a href="/">主页</a>
+    <a href="https://www.taptap.cn/user/18919160" target="_blank" rel="noopener">TapTap</a>
+    <a href="https://github.com/Boomber3" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://space.bilibili.com/95936433" target="_blank" rel="noopener">B站</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+  }
+})();
+</script>
+</body>
+</html>
